@@ -14,6 +14,16 @@ La version publicada incluye:
 - chatbot flotante con FAQ y memoria conversacional basica
 - soporte PWA con manifest y service worker
 
+## Capturas
+
+Vista de escritorio:
+
+![Vista desktop de Anima Tarot](images/readme/anima-tarot-desktop.png)
+
+Vista mobile:
+
+![Vista mobile de Anima Tarot](images/readme/anima-tarot-mobile.png)
+
 ## Stack
 
 - HTML
