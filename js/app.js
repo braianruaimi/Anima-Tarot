@@ -8,6 +8,7 @@ const selectedService = document.getElementById('selected-service');
 const selectedSummary = document.getElementById('selected-summary');
 const modalMessage = document.getElementById('booking-modal-message');
 const cardReadingModal = document.getElementById('card-reading-modal');
+const cardReadingButton = document.getElementById('card-reading-button');
 const cardReadingCards = document.querySelectorAll('.card-pick');
 const cardReadingResult = document.getElementById('card-reading-result');
 const cardReadingKicker = document.getElementById('card-reading-kicker');
@@ -137,11 +138,13 @@ function setCardReadingDrawerState(state) {
   }
 
   const isOpen = state === 'open';
-  const isPeek = state === 'peek';
 
   cardReadingModal.classList.toggle('is-open', isOpen);
-  cardReadingModal.classList.toggle('is-peek', isPeek);
   cardReadingModal.setAttribute('aria-hidden', String(state === 'hidden'));
+
+  if (cardReadingButton) {
+    cardReadingButton.setAttribute('aria-expanded', String(isOpen));
+  }
 
   if (cardReadingToggle) {
     cardReadingToggle.setAttribute('aria-expanded', String(isOpen));
@@ -224,7 +227,14 @@ if (cardReadingModal) {
 
 if (cardReadingToggle) {
   cardReadingToggle.addEventListener('click', () => {
-    const nextState = cardReadingModal?.classList.contains('is-open') ? 'peek' : 'open';
+    const nextState = cardReadingModal?.classList.contains('is-open') ? 'hidden' : 'open';
+    setCardReadingDrawerState(nextState);
+  });
+}
+
+if (cardReadingButton) {
+  cardReadingButton.addEventListener('click', () => {
+    const nextState = cardReadingModal?.classList.contains('is-open') ? 'hidden' : 'open';
     setCardReadingDrawerState(nextState);
   });
 }
@@ -288,9 +298,13 @@ if (testimonialsTrack && testimonialSlides.length > 0) {
   updateTestimonialsCarousel();
 
   window.setInterval(() => {
+    if (document.hidden) {
+      return;
+    }
+
     activeTestimonialIndex = (activeTestimonialIndex + 1) % testimonialSlides.length;
     updateTestimonialsCarousel();
-  }, 2000);
+  }, 3500);
 }
 
 cardReadingCards.forEach((button) => {
@@ -394,7 +408,7 @@ document.addEventListener('keydown', (event) => {
   }
 
   if (event.key === 'Escape' && cardReadingModal?.classList.contains('is-open')) {
-    setCardReadingDrawerState('peek');
+    setCardReadingDrawerState('hidden');
   }
 
   if (event.key === 'Escape' && promoModal?.classList.contains('is-open')) {
@@ -409,19 +423,10 @@ document.addEventListener('click', (event) => {
 
   const target = event.target;
 
-  if (target instanceof Node && !cardReadingModal.contains(target)) {
-    setCardReadingDrawerState('peek');
+  if (target instanceof Node && !cardReadingModal.contains(target) && !cardReadingButton?.contains(target)) {
+    setCardReadingDrawerState('hidden');
   }
 });
-
-window.setTimeout(() => {
-  const shouldSkipOpening = bookingModal?.classList.contains('is-open') || cardReadingModal?.classList.contains('is-open');
-
-  if (!shouldSkipOpening && cardReadingModal && !window.sessionStorage.getItem('anima-card-reading-shown')) {
-    setCardReadingDrawerState('peek');
-    window.sessionStorage.setItem('anima-card-reading-shown', 'true');
-  }
-}, 5000);
 
 window.setTimeout(() => {
   const shouldSkipPromo = bookingModal?.classList.contains('is-open') || cardReadingModal?.classList.contains('is-open') || promoModal?.classList.contains('is-open');
@@ -430,4 +435,4 @@ window.setTimeout(() => {
     togglePromoModal(true);
     window.sessionStorage.setItem('anima-one-to-one-shown', 'true');
   }
-}, 15000);
+}, 22000);

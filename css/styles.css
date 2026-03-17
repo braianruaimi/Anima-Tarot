@@ -27,6 +27,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 7rem;
 }
 
 body {
@@ -142,7 +143,7 @@ main {
 .hero {
   position: relative;
   min-height: 100vh;
-  padding-top: 4rem;
+  padding-top: 4.75rem;
   padding-bottom: 3rem;
 }
 
@@ -791,6 +792,16 @@ li {
   color: #06140a;
 }
 
+.floating-button--cards {
+  left: 1rem;
+  bottom: 5.9rem;
+  background:
+    radial-gradient(circle at top, rgba(143, 85, 212, 0.18), transparent 45%),
+    linear-gradient(180deg, rgba(14, 10, 27, 0.98), rgba(7, 5, 13, 0.98));
+  color: var(--primary);
+  border-color: var(--line);
+}
+
 .floating-button--chat {
   left: 1rem;
   background:
@@ -820,6 +831,29 @@ li {
   border-bottom: 2px solid currentColor;
   transform: rotate(-28deg);
   border-bottom-left-radius: 0.18rem;
+}
+
+.floating-button__cards {
+  position: relative;
+  width: 1.15rem;
+  height: 1.1rem;
+}
+
+.floating-button__cards span {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.35rem;
+  border: 2px solid currentColor;
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 0 16px rgba(118, 221, 255, 0.14);
+}
+
+.floating-button__cards span:first-child {
+  transform: rotate(-9deg) translateX(-0.18rem);
+}
+
+.floating-button__cards span:last-child {
+  transform: rotate(8deg) translateX(0.18rem);
 }
 
 .chatbot {
@@ -955,6 +989,7 @@ li {
   width: min(720px, 100%);
   max-height: min(92vh, 860px);
   overflow: auto;
+  scrollbar-gutter: stable;
   padding: 1.2rem;
   background:
     radial-gradient(circle at top, rgba(93, 48, 201, 0.2), transparent 32%),
@@ -964,7 +999,7 @@ li {
 .card-reading-modal {
   position: fixed;
   left: 1rem;
-  bottom: 10.25rem;
+  bottom: 10.35rem;
   z-index: 26;
   width: min(340px, calc(100% - 2rem));
   opacity: 0;
@@ -974,7 +1009,6 @@ li {
   transition: opacity 220ms ease, visibility 220ms ease, transform 220ms ease;
 }
 
-.card-reading-modal.is-peek,
 .card-reading-modal.is-open {
   opacity: 1;
   visibility: visible;
@@ -1220,6 +1254,10 @@ li {
   background: linear-gradient(180deg, rgba(5, 4, 10, 0), rgba(5, 4, 10, 0.92) 28%, rgba(5, 4, 10, 0.98));
 }
 
+.booking-modal__form .booking-form__actions .button {
+  flex: 1 1 220px;
+}
+
 .booking-modal__form .booking-form__actions .form-message {
   flex: 1 1 100%;
 }
@@ -1292,6 +1330,14 @@ li {
     width: min(calc(100% - 1rem), 420px);
   }
 
+  .hero {
+    padding-top: 5.25rem;
+  }
+
+  .hero__content {
+    padding-top: 4.5rem;
+  }
+
   .booking-modal {
     padding: 0.5rem;
   }
@@ -1299,6 +1345,10 @@ li {
   .booking-modal__dialog {
     max-height: 94vh;
     padding: 1rem;
+  }
+
+  .booking-modal__form .booking-form__actions {
+    gap: 0.75rem;
   }
 
   .booking-modal__header {
