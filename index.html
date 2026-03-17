@@ -445,38 +445,47 @@
     </section>
 
     <section class="card-reading-modal" id="card-reading-modal" aria-hidden="true">
-      <div class="card-reading-modal__overlay" data-close-cards-modal="true"></div>
-      <div class="card-reading-modal__dialog panel tarot-frame" role="dialog" aria-modal="true" aria-labelledby="card-reading-title">
-        <div class="card-reading-modal__header">
+      <div class="card-reading-modal__dialog panel tarot-frame" role="dialog" aria-labelledby="card-reading-title">
+        <button class="card-reading-modal__header" type="button" id="card-reading-toggle" aria-expanded="false">
           <div>
             <p class="eyebrow">Mensaje intuitivo</p>
-            <h3 id="card-reading-title">Elige una carta y recibe una señal breve para este momento.</h3>
+            <h3 id="card-reading-title">Elige una carta</h3>
           </div>
-          <button class="chatbot__close" type="button" data-close-cards-modal="true" aria-label="Cerrar lectura breve">Cerrar</button>
-        </div>
+          <span class="card-reading-modal__toggle-copy">Abrir</span>
+        </button>
 
-        <div class="card-reading-modal__cards" id="card-reading-cards">
-          <button class="card-pick tarot-frame" type="button" data-card="luna" data-service="Lectura intuitiva de claridad" data-summary="Reserva sugerida desde la carta La Luna" data-title="La Luna" data-reading="Hay algo importante moviendose por debajo de la superficie. Esta carta habla de intuicion, emociones intensas y necesidad de ver con claridad lo que hoy aun no tiene forma completa.">
-            <span class="card-pick__mark">I</span>
-            <strong>La Luna</strong>
-          </button>
-          <button class="card-pick tarot-frame" type="button" data-card="estrella" data-service="Lectura de apertura y proyeccion" data-summary="Reserva sugerida desde la carta La Estrella" data-title="La Estrella" data-reading="Esta carta trae alivio, recuperacion y direccion. Senala que hay una energia de renacer, pero necesita una lectura clara para convertir esperanza en movimiento concreto.">
-            <span class="card-pick__mark">II</span>
-            <strong>La Estrella</strong>
-          </button>
-          <button class="card-pick tarot-frame" type="button" data-card="torre" data-service="Lectura profunda para cambios fuertes" data-summary="Reserva sugerida desde la carta La Torre" data-title="La Torre" data-reading="Hay una estructura interna o externa que ya no puede sostenerse igual. Esta carta pide verdad, decision y una lectura que te ayude a atravesar el cambio sin confundirte mas.">
-            <span class="card-pick__mark">III</span>
-            <strong>La Torre</strong>
-          </button>
-        </div>
+        <div class="card-reading-modal__content">
+          <div class="card-reading-modal__topbar">
+            <p>Una señal breve para este momento.</p>
+            <button class="chatbot__close" type="button" data-close-cards-modal="true" aria-label="Ocultar lectura breve">Ocultar</button>
+          </div>
 
-        <div class="card-reading-modal__result" id="card-reading-result" hidden>
-          <p class="eyebrow" id="card-reading-kicker">Carta elegida</p>
-          <p class="card-reading-modal__text" id="card-reading-text"></p>
-          <div class="booking-form__actions">
-            <button class="button button--primary" type="button" id="card-reading-book">
-              Quiero reservar
+          <div class="card-reading-modal__cards" id="card-reading-cards">
+            <button class="card-pick tarot-frame" type="button" data-card="luna" data-service="Lectura intuitiva de claridad" data-summary="Reserva sugerida desde la carta La Luna" data-title="La Luna" data-reading="Hay algo importante moviendose por debajo de la superficie. Esta carta habla de intuicion, emociones intensas y necesidad de ver con claridad lo que hoy aun no tiene forma completa.">
+              <span class="card-pick__mark">I</span>
+              <strong>La Luna</strong>
             </button>
+            <button class="card-pick tarot-frame" type="button" data-card="estrella" data-service="Lectura de apertura y proyeccion" data-summary="Reserva sugerida desde la carta La Estrella" data-title="La Estrella" data-reading="Esta carta trae alivio, recuperacion y direccion. Senala que hay una energia de renacer, pero necesita una lectura clara para convertir esperanza en movimiento concreto.">
+              <span class="card-pick__mark">II</span>
+              <strong>La Estrella</strong>
+            </button>
+            <button class="card-pick tarot-frame" type="button" data-card="torre" data-service="Lectura profunda para cambios fuertes" data-summary="Reserva sugerida desde la carta La Torre" data-title="La Torre" data-reading="Hay una estructura interna o externa que ya no puede sostenerse igual. Esta carta pide verdad, decision y una lectura que te ayude a atravesar el cambio sin confundirte mas.">
+              <span class="card-pick__mark">III</span>
+              <strong>La Torre</strong>
+            </button>
+          </div>
+
+          <div class="card-reading-modal__result" id="card-reading-result" hidden>
+            <p class="eyebrow" id="card-reading-kicker">Carta elegida</p>
+            <p class="card-reading-modal__text" id="card-reading-text"></p>
+            <div class="booking-form__actions">
+              <button class="button button--secondary" type="button" id="card-reading-back">
+                Volver
+              </button>
+              <button class="button button--primary" type="button" id="card-reading-book">
+                Quiero reservar
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-const cacheName = 'anima-tarot-v5';
+const cacheName = 'anima-tarot-v7';
 const assetsToCache = [
   './',
   './index.html',
@@ -22,9 +22,15 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((key) => key !== cacheName).map((key) => caches.delete(key))),
+      Promise.all(keys.filter((key) => key !== cacheName).map((key) => caches.delete(key))).then(() => self.clients.claim()),
     ),
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', (event) => {

@@ -13,6 +13,8 @@ const cardReadingResult = document.getElementById('card-reading-result');
 const cardReadingKicker = document.getElementById('card-reading-kicker');
 const cardReadingText = document.getElementById('card-reading-text');
 const cardReadingBookButton = document.getElementById('card-reading-book');
+const cardReadingBackButton = document.getElementById('card-reading-back');
+const cardReadingToggle = document.getElementById('card-reading-toggle');
 const testimonialsTrack = document.getElementById('testimonials-track');
 const testimonialsDots = document.getElementById('testimonials-dots');
 const testimonialSlides = Array.from(document.querySelectorAll('.testimonials-carousel__slide'));
@@ -22,6 +24,14 @@ let lastModalTrigger = null;
 let selectedCardService = 'Reserva de lectura';
 let selectedCardSummary = 'Solicitud abierta desde el modal de cartas';
 let activeTestimonialIndex = 0;
+
+function resetCardReadingSelection() {
+  cardReadingCards.forEach((cardButton) => cardButton.classList.remove('is-selected'));
+
+  if (cardReadingResult) {
+    cardReadingResult.hidden = true;
+  }
+}
 
 // IDs/names de los campos a persistir
 const bookingFields = [
@@ -121,14 +131,30 @@ function toggleBookingModal(forceOpen) {
   }
 }
 
-function toggleCardReadingModal(forceOpen) {
+function setCardReadingDrawerState(state) {
   if (!cardReadingModal) {
     return;
   }
 
-  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !cardReadingModal.classList.contains('is-open');
-  cardReadingModal.classList.toggle('is-open', shouldOpen);
-  cardReadingModal.setAttribute('aria-hidden', String(!shouldOpen));
+  const isOpen = state === 'open';
+  const isPeek = state === 'peek';
+
+  cardReadingModal.classList.toggle('is-open', isOpen);
+  cardReadingModal.classList.toggle('is-peek', isPeek);
+  cardReadingModal.setAttribute('aria-hidden', String(state === 'hidden'));
+
+  if (cardReadingToggle) {
+    cardReadingToggle.setAttribute('aria-expanded', String(isOpen));
+    const toggleCopy = cardReadingToggle.querySelector('.card-reading-modal__toggle-copy');
+
+    if (toggleCopy) {
+      toggleCopy.textContent = isOpen ? 'Minimizar' : 'Abrir';
+    }
+  }
+
+  if (!isOpen) {
+    resetCardReadingSelection();
+  }
 }
 
 function togglePromoModal(forceOpen) {
@@ -191,8 +217,15 @@ if (cardReadingModal) {
     }
 
     if (target.dataset.closeCardsModal === 'true') {
-      toggleCardReadingModal(false);
+      setCardReadingDrawerState('hidden');
     }
+  });
+}
+
+if (cardReadingToggle) {
+  cardReadingToggle.addEventListener('click', () => {
+    const nextState = cardReadingModal?.classList.contains('is-open') ? 'peek' : 'open';
+    setCardReadingDrawerState(nextState);
   });
 }
 
@@ -262,6 +295,7 @@ if (testimonialsTrack && testimonialSlides.length > 0) {
 
 cardReadingCards.forEach((button) => {
   button.addEventListener('click', () => {
+    setCardReadingDrawerState('open');
     cardReadingCards.forEach((cardButton) => cardButton.classList.remove('is-selected'));
     button.classList.add('is-selected');
 
@@ -282,9 +316,16 @@ cardReadingCards.forEach((button) => {
   });
 });
 
+if (cardReadingBackButton) {
+  cardReadingBackButton.addEventListener('click', () => {
+    resetCardReadingSelection();
+    setCardReadingDrawerState('open');
+  });
+}
+
 if (cardReadingBookButton) {
   cardReadingBookButton.addEventListener('click', () => {
-    toggleCardReadingModal(false);
+    setCardReadingDrawerState('hidden');
     openBookingFlow(selectedCardService, selectedCardSummary, cardReadingBookButton);
   });
 }
@@ -353,7 +394,7 @@ document.addEventListener('keydown', (event) => {
   }
 
   if (event.key === 'Escape' && cardReadingModal?.classList.contains('is-open')) {
-    toggleCardReadingModal(false);
+    setCardReadingDrawerState('peek');
   }
 
   if (event.key === 'Escape' && promoModal?.classList.contains('is-open')) {
@@ -361,11 +402,23 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+document.addEventListener('click', (event) => {
+  if (!cardReadingModal?.classList.contains('is-open')) {
+    return;
+  }
+
+  const target = event.target;
+
+  if (target instanceof Node && !cardReadingModal.contains(target)) {
+    setCardReadingDrawerState('peek');
+  }
+});
+
 window.setTimeout(() => {
   const shouldSkipOpening = bookingModal?.classList.contains('is-open') || cardReadingModal?.classList.contains('is-open');
 
   if (!shouldSkipOpening && cardReadingModal && !window.sessionStorage.getItem('anima-card-reading-shown')) {
-    toggleCardReadingModal(true);
+    setCardReadingDrawerState('peek');
     window.sessionStorage.setItem('anima-card-reading-shown', 'true');
   }
 }, 5000);
