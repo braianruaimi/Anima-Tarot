@@ -16,6 +16,7 @@ const cardReadingText = document.getElementById('card-reading-text');
 const cardReadingBookButton = document.getElementById('card-reading-book');
 const cardReadingBackButton = document.getElementById('card-reading-back');
 const cardReadingToggle = document.getElementById('card-reading-toggle');
+const cardReadingReopenButton = document.getElementById('card-reading-reopen');
 const testimonialsTrack = document.getElementById('testimonials-track');
 const testimonialsDots = document.getElementById('testimonials-dots');
 const testimonialSlides = Array.from(document.querySelectorAll('.testimonials-carousel__slide'));
@@ -138,12 +139,18 @@ function setCardReadingDrawerState(state) {
   }
 
   const isOpen = state === 'open';
+  const isHidden = state === 'hidden';
 
   cardReadingModal.classList.toggle('is-open', isOpen);
-  cardReadingModal.setAttribute('aria-hidden', String(state === 'hidden'));
+  cardReadingModal.setAttribute('aria-hidden', String(isHidden));
 
   if (cardReadingButton) {
     cardReadingButton.setAttribute('aria-expanded', String(isOpen));
+  }
+
+  if (cardReadingReopenButton) {
+    cardReadingReopenButton.classList.toggle('is-visible', isHidden);
+    cardReadingReopenButton.setAttribute('aria-hidden', String(!isHidden));
   }
 
   if (cardReadingToggle) {
@@ -158,6 +165,49 @@ function setCardReadingDrawerState(state) {
   if (!isOpen) {
     resetCardReadingSelection();
   }
+}
+
+function setupRevealAnimations() {
+  const revealTargets = Array.from(
+    document.querySelectorAll(
+      '.hero__text, .hero__card, .section-heading, .section-heading--split, .about__intro, .benefit-card, .service-card, .booking-form--info, .booking-info, .testimonials-carousel, .cta-final__panel',
+    ),
+  );
+
+  if (revealTargets.length === 0) {
+    return;
+  }
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  revealTargets.forEach((element, index) => {
+    element.classList.add('reveal');
+    element.style.setProperty('--reveal-delay', `${(index % 4) * 90}ms`);
+  });
+
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    revealTargets.forEach((element) => element.classList.add('is-visible'));
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.16,
+      rootMargin: '0px 0px -12% 0px',
+    },
+  );
+
+  revealTargets.forEach((element) => revealObserver.observe(element));
 }
 
 function togglePromoModal(forceOpen) {
@@ -236,6 +286,12 @@ if (cardReadingButton) {
   cardReadingButton.addEventListener('click', () => {
     const nextState = cardReadingModal?.classList.contains('is-open') ? 'hidden' : 'open';
     setCardReadingDrawerState(nextState);
+  });
+}
+
+if (cardReadingReopenButton) {
+  cardReadingReopenButton.addEventListener('click', () => {
+    setCardReadingDrawerState('open');
   });
 }
 
@@ -427,6 +483,13 @@ document.addEventListener('click', (event) => {
     setCardReadingDrawerState('hidden');
   }
 });
+
+window.addEventListener('load', () => {
+  document.body.classList.add('is-ready');
+  setupRevealAnimations();
+});
+
+setCardReadingDrawerState('hidden');
 
 window.setTimeout(() => {
   const shouldSkipPromo = bookingModal?.classList.contains('is-open') || cardReadingModal?.classList.contains('is-open') || promoModal?.classList.contains('is-open');
