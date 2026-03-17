@@ -1,0 +1,17 @@
+{
+  "name": "Anima Tarot",
+  "short_name": "Anima",
+  "description": "Plantilla web profesional en espanol para negocios locales con estilo tarot y soporte instalable.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f0b14",
+  "theme_color": "#15121d",
+  "icons": [
+    {
+      "src": "images/icon-app.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
