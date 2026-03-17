@@ -1,103 +1,29 @@
 const chatbotButton = document.querySelector('.floating-button--chat');
 const chatbot = document.querySelector('.chatbot');
 const chatbotClose = document.querySelector('.chatbot__close');
-const chatForm = document.getElementById('chat-form');
-const chatInput = document.getElementById('chat-input');
 const chatMessages = document.getElementById('chat-messages');
 const faqButtons = document.querySelectorAll('.chatbot__faq-chip');
 
-const memoryKey = 'anima-chatbot-memory';
-
-const topicKnowledge = {
-  productos: {
-    keywords: ['producto', 'productos', 'tienda', 'articulo', 'articulos'],
-    answers: [
-      'Si ofreces productos rituales, velas, cursos o sesiones complementarias, pueden mostrarse con imagen, beneficio principal y un llamado claro a escribirte.',
-      'Cuando el usuario entiende rapido que recibe y por que le conviene, la decision de contacto ocurre con mucha mas naturalidad.',
-      'Tambien puedes llevar cada tarjeta a WhatsApp o a una ficha detallada para convertir interes en conversacion real.',
-    ],
-  },
-  servicios: {
-    keywords: ['servicio', 'servicios', 'sesion', 'sesiones', 'lectura', 'lecturas'],
-    answers: [
-      'Puedes elegir entre una lectura personalizada, una tirada enfocada en un tema puntual o una guia breve por WhatsApp, segun lo que necesites mirar hoy.',
-      'Si no sabes cual te conviene, lo mejor es contar brevemente tu situacion y desde ahi orientarte hacia la lectura mas adecuada.',
-      'Tambien puedes sumar duracion, modalidad y valor orientativo para reducir dudas antes del contacto.',
-    ],
-  },
-  pedidos: {
-    keywords: ['pedido', 'pedidos', 'orden', 'ordenes', 'reserva', 'reservas', 'turno', 'turnos'],
-    answers: [
-      'Reservar es simple: puedes dejar tu consulta en el formulario o escribir por WhatsApp para coordinar de manera directa.',
-      'Si ya sabes que quieres tu lectura, WhatsApp suele ser el camino mas rapido para resolver horarios, modalidad y siguientes pasos.',
-      'Cuando quieras escalarlo, esta base puede conectarse con agenda, email o automatizaciones sin cambiar la experiencia visual.',
-    ],
-  },
-  precios: {
-    keywords: ['precio', 'precios', 'valor', 'valores', 'costo', 'costos', 'tarifa', 'tarifas'],
-    answers: [
-      'Puedes mostrar valores orientativos o responder por WhatsApp si prefieres una atencion mas personalizada y cercana.',
-      'Si quieres cuidar una percepcion premium, funciona muy bien mostrar precios desde y ampliar detalles en la conversacion.',
-      'Otra opcion es destacar promociones, sesiones especiales o combos sin recargar la pagina principal.',
-    ],
-  },
-  modalidad: {
-    keywords: ['online', 'whatsapp', 'virtual', 'modalidad', 'presencial', 'distancia'],
-    answers: [
-      'La experiencia esta pensada para resolverse de forma online y con contacto directo por WhatsApp, para que puedas acceder desde donde estes.',
-      'Si necesitas una modalidad puntual, lo mejor es escribir directamente y asi coordinar la forma mas comoda para ti.',
-      'La prioridad es que la lectura sea clara, cercana y facil de sostener, sin complicarte el proceso previo.',
-    ],
-  },
+const topicAnswers = {
+  precios:
+    'Hoy las lecturas disponibles son: Lectura general inicial por $6.000, Lectura general expandida por $8.000 y Lectura profunda completa por $10.000. Si no sabes cual elegir, la mejor decision es tomar la que se ajuste a la profundidad que hoy necesitas.',
+  modalidad:
+    'Las lecturas se trabajan de forma online y el contacto se coordina por WhatsApp para que el proceso sea claro, directo y comodo. Si necesitas resolver una duda puntual antes de reservar, puedes hacerlo desde el formulario o por mensaje.',
+  incluye:
+    'La lectura inicial incluye una mirada general y tres preguntas concretas. La expandida suma cuatro preguntas, mas desarrollo de un caso puntual y consejo final. La profunda completa abre una hora de lectura, hasta seis preguntas y una resolucion mas amplia del proceso.',
+  amor:
+    'En temas de amor, la lectura busca darte claridad sobre lo que sientes, lo que la otra persona moviliza en ti y que dinamica conviene mirar con mas honestidad. No se trabaja desde promesas absolutas, sino desde orientacion consciente y precisa.',
+  parejas:
+    'En parejas, la lectura ayuda a observar vinculo, comunicacion, desgaste, expectativas y posibilidades reales de orden. La idea no es decidir por ti, sino darte una mirada clara para que puedas posicionarte mejor.',
+  guia:
+    'Si sientes confusion o estas atravesando una etapa de cambio, una lectura de guia puede ayudarte a ordenar lo que hoy esta disperso. Suele ser una buena opcion cuando necesitas entender proceso, prioridad y proximo paso con mas claridad.',
+  confidencialidad:
+    'Lo que compartes en una lectura se sostiene con respeto, cuidado y discrecion. La idea es que puedas hablar con confianza, sin sentirte expuesta ni forzada a contar mas de lo que deseas.',
+  trabajo:
+    'En trabajo y decisiones, la lectura puede ayudarte a ver bloqueos, oportunidades, desgaste, tiempos y direccion posible. No reemplaza tu criterio personal, pero si puede darte mas claridad para decidir con menos ruido interno.',
+  salud:
+    'En temas de salud, la lectura puede acompanar desde lo emocional y simbolico, pero no reemplaza criterio medico, psicologico ni terapeutico. Si hay una preocupacion importante, lo responsable es apoyarte tambien en profesionales de salud.',
 };
-
-const followUpKeywords = [
-  'y',
-  'tambien',
-  'ademas',
-  'mas',
-  'mas info',
-  'contame mas',
-  'como',
-  'cuanto',
-  'cuantos',
-  'detalle',
-  'detalles',
-  'incluye',
-  'incluyen',
-];
-
-function getMemory() {
-  try {
-    const savedMemory = window.localStorage.getItem(memoryKey);
-    return savedMemory ? JSON.parse(savedMemory) : { lastTopic: null, topicCounts: {} };
-  } catch {
-    return { lastTopic: null, topicCounts: {} };
-  }
-}
-
-function setMemory(memory) {
-  window.localStorage.setItem(memoryKey, JSON.stringify(memory));
-}
-
-const botAnswers = [
-  {
-    keywords: ['producto', 'productos'],
-    answer: 'Puedes mostrar productos destacados con imagen, descripcion y boton. Solo tienes que editar las tarjetas de la seccion de servicios.',
-  },
-  {
-    keywords: ['servicio', 'servicios'],
-    answer: 'La plantilla permite presentar servicios principales, beneficios y llamadas a la accion para reservar o consultar por WhatsApp.',
-  },
-  {
-    keywords: ['pedido', 'pedidos', 'orden', 'ordenes'],
-    answer: 'El formulario sirve para recibir pedidos o consultas. Luego puedes conectarlo con email, backend o automatizaciones si quieres escalarlo.',
-  },
-  {
-    keywords: ['precio', 'precios', 'valor', 'costos'],
-    answer: 'Puedes indicar precios en las tarjetas o responder por WhatsApp si prefieres una venta mas personalizada.',
-  },
-];
 
 function appendMessage(content, type) {
   if (!chatMessages) {
@@ -111,57 +37,8 @@ function appendMessage(content, type) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-function detectTopic(text) {
-  const normalizedText = text.toLowerCase();
-
-  return Object.entries(topicKnowledge).find(([, topic]) =>
-    topic.keywords.some((keyword) => normalizedText.includes(keyword)),
-  )?.[0] ?? null;
-}
-
-function isFollowUpQuestion(text) {
-  const normalizedText = text.toLowerCase().trim();
-
-  if (normalizedText.split(' ').length <= 3) {
-    return true;
-  }
-
-  return followUpKeywords.some((keyword) => normalizedText.includes(keyword));
-}
-
-function getBotReply(text) {
-  const normalizedText = text.toLowerCase();
-  const memory = getMemory();
-  const detectedTopic = detectTopic(normalizedText);
-  const activeTopic = detectedTopic || (isFollowUpQuestion(normalizedText) ? memory.lastTopic : null);
-
-  if (activeTopic) {
-    const topicCounts = memory.topicCounts || {};
-    const nextCount = (topicCounts[activeTopic] || 0) + 1;
-    const topicData = topicKnowledge[activeTopic];
-    const answerIndex = Math.min(nextCount - 1, topicData.answers.length - 1);
-
-    setMemory({
-      lastTopic: activeTopic,
-      topicCounts: {
-        ...topicCounts,
-        [activeTopic]: nextCount,
-      },
-    });
-
-    if (!detectedTopic && memory.lastTopic) {
-      return `Seguimos sobre ${activeTopic}. ${topicData.answers[answerIndex]}`;
-    }
-
-    return topicData.answers[answerIndex];
-  }
-
-  setMemory({
-    ...memory,
-    lastTopic: null,
-  });
-
-  return 'Puedo ayudarte con lecturas, reservas, modalidad, precios y dudas frecuentes. Si eliges un tema o me haces una pregunta directa, te respondo con mas contexto.';
+function getBotReply(topic) {
+  return topicAnswers[topic] || 'Puedes elegir una consulta frecuente y te respondo con una orientacion breve antes de reservar.';
 }
 
 function toggleChatbot(forceOpen) {
@@ -172,10 +49,6 @@ function toggleChatbot(forceOpen) {
   const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !chatbot.classList.contains('is-open');
   chatbot.classList.toggle('is-open', shouldOpen);
   chatbot.setAttribute('aria-hidden', String(!shouldOpen));
-
-  if (shouldOpen && chatInput) {
-    chatInput.focus();
-  }
 }
 
 if (chatbotButton) {
@@ -186,38 +59,20 @@ if (chatbotClose) {
   chatbotClose.addEventListener('click', () => toggleChatbot(false));
 }
 
-if (chatForm && chatInput) {
-  const submitQuestion = (question) => {
-    appendMessage(question, 'user');
-    chatInput.value = '';
+faqButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const question = button.dataset.question;
+    const topic = button.dataset.topic;
 
-    window.setTimeout(() => {
-      appendMessage(getBotReply(question), 'bot');
-    }, 350);
-  };
-
-  chatForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-
-    const question = chatInput.value.trim();
-
-    if (!question) {
+    if (!question || !topic) {
       return;
     }
 
-    submitQuestion(question);
+    toggleChatbot(true);
+    appendMessage(question, 'user');
+
+    window.setTimeout(() => {
+      appendMessage(getBotReply(topic), 'bot');
+    }, 260);
   });
-
-  faqButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      const question = button.dataset.question;
-
-      if (!question) {
-        return;
-      }
-
-      toggleChatbot(true);
-      submitQuestion(question);
-    });
-  });
-}
+});

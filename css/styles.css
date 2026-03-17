@@ -21,10 +21,10 @@
   --max-width: 1180px;
   --floating-edge: 1rem;
   --floating-base-bottom: 1rem;
-  --floating-cards-bottom: 5.9rem;
-  --floating-chatbot-bottom: 5.75rem;
-  --floating-card-modal-bottom: 10.35rem;
   --floating-reopen-bottom: 10.7rem;
+  --floating-chatbot-bottom: calc(var(--floating-reopen-bottom) + 0.95rem);
+  --floating-cards-bottom: 5.9rem;
+  --floating-card-modal-bottom: 10.35rem;
 }
 
 * {
@@ -664,7 +664,7 @@ li {
 
 .booking-form input:focus,
 .booking-form textarea:focus,
-.chatbot__form input:focus {
+.chatbot__faq-chip:focus-visible {
   outline: 2px solid rgba(143, 77, 255, 0.16);
   border-color: rgba(191, 125, 255, 0.44);
   box-shadow: 0 0 0 4px rgba(143, 77, 255, 0.08);
@@ -990,8 +990,7 @@ li {
   transform: translateY(0);
 }
 
-.chatbot__header,
-.chatbot__form {
+.chatbot__header {
   display: flex;
   gap: 0.75rem;
   align-items: center;
@@ -1040,7 +1039,7 @@ li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
-  padding-bottom: 0.9rem;
+  padding-bottom: 0.65rem;
 }
 
 .chatbot__faq-chip {
@@ -1059,13 +1058,11 @@ li {
   background: rgba(143, 77, 255, 0.18);
 }
 
-.chatbot__form input {
-  flex: 1;
-  border-radius: 999px;
-  border: 1px solid rgba(118, 221, 255, 0.18);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text);
-  padding: 0.9rem 1rem;
+.chatbot__note {
+  margin: 0;
+  color: rgba(245, 236, 220, 0.72);
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
 .booking-modal {
@@ -1731,9 +1728,9 @@ li {
     --floating-edge: 0.5rem;
     --floating-base-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
     --floating-cards-bottom: calc(var(--floating-base-bottom) + 4.5rem);
-    --floating-chatbot-bottom: calc(var(--floating-base-bottom) + 4.4rem);
     --floating-card-modal-bottom: calc(var(--floating-base-bottom) + 8.85rem);
     --floating-reopen-bottom: calc(var(--floating-base-bottom) + 9.3rem);
+    --floating-chatbot-bottom: calc(var(--floating-reopen-bottom) + 0.8rem);
   }
 
   .menu-toggle {
@@ -1906,8 +1903,7 @@ li {
 
   .booking-modal__form input,
   .booking-modal__form select,
-  .booking-modal__form textarea,
-  .chatbot__form input {
+  .booking-modal__form textarea {
     min-height: 52px;
   }
 
@@ -2008,9 +2004,9 @@ li {
 @media (max-width: 520px) {
   :root {
     --floating-cards-bottom: calc(var(--floating-base-bottom) + 4.15rem);
-    --floating-chatbot-bottom: calc(var(--floating-base-bottom) + 4.05rem);
     --floating-card-modal-bottom: calc(var(--floating-base-bottom) + 8.1rem);
     --floating-reopen-bottom: calc(var(--floating-base-bottom) + 8.55rem);
+    --floating-chatbot-bottom: calc(var(--floating-reopen-bottom) + 0.7rem);
   }
 
   .container {

@@ -68,7 +68,7 @@
           </div>
 
           <div class="hero__card tarot-frame">
-            <img src="images/hero-tarot.svg" alt="Carta decorativa con simbolos de tarot" />
+            <img src="images/anima-tarot.jpeg" alt="Imagen de marca de Anima Tarot" />
             <div class="hero__card-copy">
               <p class="eyebrow">Esencia de marca</p>
               <h2>Una presencia mística, profesional y emocionalmente precisa.</h2>
@@ -124,7 +124,7 @@
 
           <div class="services-grid">
             <article class="service-card tarot-frame">
-              <img src="images/service-reading.svg" alt="Servicio de lectura personalizada" />
+              <img src="images/cartas.jpeg" alt="Lectura general con cartas de tarot" />
               <div class="service-card__body">
                 <div class="service-card__kicker">
                   <span>$6.000</span>
@@ -145,7 +145,7 @@
             </article>
 
             <article class="service-card tarot-frame">
-              <img src="images/service-spread.svg" alt="Servicio de tirada especial" />
+              <img src="images/cartas-vela.jpeg" alt="Lectura general expandida con cartas y velas" />
               <div class="service-card__body">
                 <div class="service-card__kicker">
                   <span>$8.000</span>
@@ -166,7 +166,7 @@
             </article>
 
             <article class="service-card tarot-frame">
-              <img src="images/service-guidance.svg" alt="Servicio de guia por WhatsApp" />
+              <img src="images/carta-mano.jpeg" alt="Lectura profunda con carta en mano" />
               <div class="service-card__body">
                 <div class="service-card__kicker">
                   <span>$10.000</span>
@@ -325,42 +325,54 @@
       <span class="floating-button__label floating-button__label--cards">Cartas intuitivas</span>
     </button>
 
-    <button class="floating-button floating-button--chat" type="button" aria-label="Abrir chat">
+    <button class="floating-button floating-button--chat" type="button" aria-label="Abrir preguntas frecuentes">
       <span class="floating-button__bubble" aria-hidden="true"></span>
-      <span class="floating-button__label">Chat</span>
+      <span class="floating-button__label">Consultas</span>
     </button>
 
     <section class="chatbot" aria-hidden="true">
       <div class="chatbot__header">
         <div>
-          <p class="eyebrow">Asistente virtual</p>
+          <p class="eyebrow">Consultas frecuentes</p>
           <strong>Orientacion inicial</strong>
         </div>
         <button class="chatbot__close" type="button" aria-label="Cerrar chat">Cerrar</button>
       </div>
       <div class="chatbot__messages" id="chat-messages">
         <div class="chatbot__message chatbot__message--bot">
-          Hola, estoy aqui para ayudarte a elegir la mejor lectura, resolver dudas frecuentes y acompañarte antes de reservar.
+          Puedes tocar una consulta frecuente y te respondo con una orientacion clara, responsable y profesional antes de reservar.
         </div>
       </div>
       <div class="chatbot__faq" aria-label="Preguntas frecuentes">
-        <button class="chatbot__faq-chip" type="button" data-question="Que lectura me conviene segun lo que estoy viviendo?">
-          Que lectura elegir
+        <button class="chatbot__faq-chip" type="button" data-topic="precios" data-question="Precios">
+          Precios
         </button>
-        <button class="chatbot__faq-chip" type="button" data-question="Como manejan los precios de las lecturas?">
-          Valores
-        </button>
-        <button class="chatbot__faq-chip" type="button" data-question="Como puedo reservar mi consulta?">
-          Reservar
-        </button>
-        <button class="chatbot__faq-chip" type="button" data-question="Las lecturas son online o por WhatsApp?">
+        <button class="chatbot__faq-chip" type="button" data-topic="modalidad" data-question="Modalidad">
           Modalidad
         </button>
+        <button class="chatbot__faq-chip" type="button" data-topic="incluye" data-question="Que incluye cada lectura">
+          Que incluye cada lectura
+        </button>
+        <button class="chatbot__faq-chip" type="button" data-topic="amor" data-question="Amor">
+          Amor
+        </button>
+        <button class="chatbot__faq-chip" type="button" data-topic="parejas" data-question="Parejas">
+          Parejas
+        </button>
+        <button class="chatbot__faq-chip" type="button" data-topic="guia" data-question="Guia">
+          Guia
+        </button>
+        <button class="chatbot__faq-chip" type="button" data-topic="confidencialidad" data-question="Confidencialidad">
+          Confidencialidad
+        </button>
+        <button class="chatbot__faq-chip" type="button" data-topic="trabajo" data-question="Trabajo y decisiones">
+          Trabajo y decisiones
+        </button>
+        <button class="chatbot__faq-chip" type="button" data-topic="salud" data-question="Salud">
+          Salud
+        </button>
       </div>
-      <form class="chatbot__form" id="chat-form">
-        <input id="chat-input" type="text" placeholder="Escribe tu duda y te orientamos" autocomplete="off" />
-        <button class="button button--primary" type="submit">Enviar</button>
-      </form>
+      <p class="chatbot__note">Selecciona un tema para ver una respuesta breve y orientativa.</p>
     </section>
 
     <section class="booking-modal" id="booking-modal" aria-hidden="true">

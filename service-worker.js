@@ -1,4 +1,4 @@
-const cacheName = 'anima-tarot-v9';
+const cacheName = 'anima-tarot-v10';
 const assetsToCache = [
   './',
   './index.html',
@@ -7,10 +7,10 @@ const assetsToCache = [
   './js/form.js',
   './js/chatbot.js',
   './js/pwa.js',
-  './images/hero-tarot.svg',
-  './images/service-reading.svg',
-  './images/service-spread.svg',
-  './images/service-guidance.svg',
+  './images/anima-tarot.jpeg',
+  './images/cartas.jpeg',
+  './images/cartas-vela.jpeg',
+  './images/carta-mano.jpeg',
   './images/icon-app.svg',
   './manifest.webmanifest'
 ];
