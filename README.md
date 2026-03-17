@@ -1,160 +1,159 @@
 # Anima Tarot
 
-Sitio web estatico, responsive e instalable, pensado para una marca de tarot profesional con foco en conversion, contacto directo y presencia visual premium.
+Sitio web estatico para Anima Tarot, diseñado para presentar servicios de lectura, resolver dudas frecuentes y convertir visitas en solicitudes directas por WhatsApp.
 
-## Vision del proyecto
+## Estado actual
 
-Anima Tarot busca transmitir tres cosas desde el primer segundo:
+La version publicada incluye:
 
-- confianza para reservar
-- sensibilidad estetica
-- claridad para convertir visitas en conversaciones reales
-
-La experiencia esta diseñada para que una persona pueda descubrir los servicios, resolver dudas frecuentes, dejar sus datos o escribir directamente por WhatsApp sin fricciones.
+- propuesta de valor y hero principal orientado a conversion
+- tres servicios cerrados con enfoque comercial claro
+- modal de reserva por servicio
+- envio de solicitud a WhatsApp con mensaje precargado
+- persistencia local de datos del usuario en el modal mediante localStorage
+- chatbot flotante con FAQ y memoria conversacional basica
+- soporte PWA con manifest y service worker
 
 ## Stack
 
 - HTML
 - CSS
 - JavaScript
-- Manifest web app
-- Service worker para instalacion y cache basico
-
-## Funcionalidades implementadas
-
-- Hero principal con propuesta de valor y CTA directo a WhatsApp
-- Seccion de presentacion con beneficios persuasivos
-- Seccion de servicios con tarjetas editables
-- Formulario de contacto con confirmacion inmediata en el navegador
-- Testimonios orientados a prueba social
-- CTA final de cierre para impulsar la accion
-- Boton flotante de WhatsApp
-- Boton flotante de asistente virtual
-- Chatbot con preguntas frecuentes tactiles
-- Chatbot con memoria basica del ultimo tema consultado
-- Soporte PWA para instalacion desde navegador compatible
+- manifest web app
+- service worker
 
 ## Estructura del proyecto
 
-- css/styles.css
-- js/app.js
-- js/chatbot.js
-- js/form.js
-- js/pwa.js
-- images/hero-tarot.svg
-- images/service-reading.svg
-- images/service-spread.svg
-- images/service-guidance.svg
-- images/icon-app.svg
-- index.html
-- manifest.webmanifest
-- service-worker.js
+- [index.html](index.html): estructura principal del sitio, contenido y modal de reserva
+- [css/styles.css](css/styles.css): sistema visual, responsive, componentes y estilos del modal
+- [js/app.js](js/app.js): menu mobile, logica del modal y envio a WhatsApp
+- [js/chatbot.js](js/chatbot.js): chatbot, FAQ y memoria contextual
+- [js/form.js](js/form.js): mensaje de continuidad para el formulario legacy
+- [js/pwa.js](js/pwa.js): instalacion PWA y registro del service worker
+- [service-worker.js](service-worker.js): cache offline y actualizacion de assets
+- [manifest.webmanifest](manifest.webmanifest): configuracion instalable de la app
+- [images/icon-app.svg](images/icon-app.svg): icono principal de la PWA
 
-## Identidad visual
+## Flujo de conversion
 
-La estetica se apoya en:
+1. La persona entra al sitio y ve la propuesta de valor principal.
+2. Explora los servicios y elige uno desde las tarjetas comerciales.
+3. Abre el modal de reserva del servicio seleccionado.
+4. Completa sus datos una sola vez.
+5. El sitio recuerda nombre, apellido, fecha de nacimiento, email y notas para futuras reservas.
+6. Al enviar, se abre WhatsApp con la solicitud ya armada.
 
-- negros profundos como base
-- dorados suaves para jerarquia y sofisticacion
-- lilas y violetas electricos como acento mistico controlado
-- superficies translúcidas con brillo tenue
-- composicion mobile-first con tono ceremonial y elegante
+## Servicios actuales
 
-Los colores principales estan centralizados en [css/styles.css](css/styles.css) dentro del bloque :root.
+Los servicios y sus textos comerciales viven en [index.html](index.html).
 
-## Personalizacion rapida
+Cada servicio puede definir:
 
-### Textos
+- nombre
+- resumen breve
+- beneficios o enfoque
+- llamada a la accion
+- texto que se envia al modal
 
-Todo el contenido editable principal esta en [index.html](index.html).
+## WhatsApp
 
-### Estilos
+El sitio usa el numero configurado en [js/app.js](js/app.js) para construir el mensaje final de reserva.
 
-Puedes modificar:
+El mensaje enviado incluye:
 
-- paleta y sombras en [css/styles.css](css/styles.css)
-- espaciado y layout en [css/styles.css](css/styles.css)
-- apariencias del chatbot, botones y paneles en [css/styles.css](css/styles.css)
+- servicio elegido
+- detalle o resumen del servicio
+- nombre
+- apellido
+- fecha de nacimiento
+- email
+- notas opcionales
 
-### Chatbot
+## Persistencia local
 
-La logica del asistente esta en [js/chatbot.js](js/chatbot.js).
+El modal guarda datos del usuario en localStorage para evitar que tenga que reescribirlos en cada nueva reserva.
+
+Actualmente se persisten estos campos desde [js/app.js](js/app.js):
+
+- nombre
+- apellido
+- fechaNacimiento
+- email
+- notas
+
+## Chatbot
+
+El chatbot esta implementado en [js/chatbot.js](js/chatbot.js).
 
 Incluye:
 
-- deteccion basica por temas
-- continuidad conversacional usando localStorage
-- chips de preguntas frecuentes dentro del chat
+- preguntas frecuentes tactiles
+- deteccion de temas por palabras clave
+- continuidad de respuesta cuando la persona hace preguntas de seguimiento
+- memoria simple guardada en localStorage
 
-### Formulario
+## PWA
 
-La respuesta del formulario esta en [js/form.js](js/form.js).
-
-Hoy muestra un mensaje de confirmacion en frontend. Mas adelante puede conectarse con:
-
-- email
-- Google Sheets
-- backend propio
-- automatizaciones externas
-
-### WhatsApp
-
-El numero configurado actualmente es 2215047962 y esta usado en formato WhatsApp internacional dentro de [index.html](index.html).
-
-## PWA e instalacion
-
-El proyecto incluye:
+La instalacion y el cache estan resueltos con:
 
 - [manifest.webmanifest](manifest.webmanifest)
+- [js/pwa.js](js/pwa.js)
 - [service-worker.js](service-worker.js)
-- boton de instalacion controlado desde [js/pwa.js](js/pwa.js)
 
-En navegadores compatibles, el boton de instalacion aparece cuando el sistema detecta que la web puede instalarse.
+Cuando se actualizan archivos importantes del frontend, conviene incrementar la version del cache en [service-worker.js](service-worker.js) para evitar que clientes con una version anterior sigan viendo assets viejos.
 
-## GitHub Pages
+## Publicacion
 
-El contenido ya fue subido a la rama main del repositorio.
+Repositorio:
 
-Para publicarlo en GitHub Pages:
+- https://github.com/braianruaimi/Anima-Tarot
 
-1. Ir a Settings > Pages en el repositorio.
-2. En Build and deployment elegir Deploy from a branch.
-3. Seleccionar main.
-4. Seleccionar /root.
-5. Guardar y esperar la publicacion.
-
-La URL esperada es:
+Sitio esperado en GitHub Pages:
 
 - https://braianruaimi.github.io/Anima-Tarot/
 
-Si la URL devuelve 404, normalmente significa que GitHub Pages aun no fue activado o todavia esta procesando el deploy.
+Para publicar desde GitHub Pages:
+
+1. Ir a Settings > Pages.
+2. Elegir Deploy from a branch.
+3. Seleccionar la rama main.
+4. Seleccionar la carpeta /root.
+5. Guardar los cambios.
 
 ## Desarrollo local
 
-No requiere dependencias ni build para funcionar como sitio estatico.
+No requiere dependencias ni proceso de build.
 
-Opciones recomendadas para previsualizar:
+Opciones simples para probarlo:
 
-1. Abrir index.html directamente en el navegador.
+1. Abrir [index.html](index.html) en el navegador.
 2. Servir la carpeta con una extension de live server.
 3. Usar cualquier servidor estatico simple.
 
-## Archivos clave
+## Personalizacion rapida
 
-- [index.html](index.html): estructura y contenido del sitio
-- [css/styles.css](css/styles.css): sistema visual, responsive y componentes
-- [js/chatbot.js](js/chatbot.js): logica del asistente virtual
-- [js/form.js](js/form.js): respuesta del formulario
-- [js/pwa.js](js/pwa.js): instalacion PWA y registro del service worker
-- [service-worker.js](service-worker.js): cache basico offline
+Para cambiar contenido:
 
-## Siguientes mejoras sugeridas
+- editar [index.html](index.html)
 
-1. Conectar el formulario a un canal real de recepcion.
-2. Persistir el historial del chat entre recargas.
-3. Reemplazar testimonios e imagenes por contenido real de la marca.
-4. Añadir agenda o reservas reales si el flujo comercial lo necesita.
+Para cambiar visual:
 
-## Estado actual
+- editar [css/styles.css](css/styles.css)
 
-Base visual, copy persuasivo, chatbot contextual, WhatsApp real y estructura lista para seguir personalizando sobre Anima Tarot.
+Para cambiar el flujo del modal o el numero de WhatsApp:
+
+- editar [js/app.js](js/app.js)
+
+Para ajustar respuestas del asistente:
+
+- editar [js/chatbot.js](js/chatbot.js)
+
+## Notas de mantenimiento
+
+- Si cambias textos, servicios o assets criticos, revisa si hace falta subir la version del cache en [service-worker.js](service-worker.js).
+- Si el sitio parece no actualizar en un dispositivo ya instalado, suele ser un tema de cache del service worker.
+- El formulario legacy del bloque de contacto ya no procesa reservas: el flujo principal ahora vive en el modal de cada servicio.
+
+## Resumen
+
+Anima Tarot queda documentado como un sitio estatico, comercial y listo para operar, con reserva directa por WhatsApp, memoria local para mejorar la friccion del formulario y base PWA para instalacion.
