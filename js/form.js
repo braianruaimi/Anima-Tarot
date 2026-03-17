@@ -4,17 +4,7 @@ const formMessage = document.getElementById('form-message');
 if (contactForm && formMessage) {
   contactForm.addEventListener('submit', (event) => {
     event.preventDefault();
-
-    const formData = new FormData(contactForm);
-    const nombre = formData.get('nombre');
-
-    formMessage.textContent = `Gracias ${nombre}, recibimos tu mensaje. Muy pronto nos pondremos en contacto para ayudarte a coordinar tu lectura.`;
+    formMessage.textContent = 'Ahora las solicitudes se envian desde el modal de reserva de cada servicio o desde el boton para recibir orientacion.';
     formMessage.classList.add('is-success');
-    contactForm.reset();
-
-    window.setTimeout(() => {
-      formMessage.textContent = '';
-      formMessage.classList.remove('is-success');
-    }, 4000);
   });
 }

@@ -507,6 +507,23 @@ li {
   min-height: 15rem;
 }
 
+.service-card__kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.service-card__kicker span {
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(240, 211, 160, 0.14);
+  background: linear-gradient(180deg, rgba(143, 77, 255, 0.16), rgba(255, 255, 255, 0.03));
+  color: var(--primary-strong);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .service-card__body .button {
   margin-top: auto;
 }
@@ -514,6 +531,10 @@ li {
 .booking-form {
   display: grid;
   gap: 1rem;
+}
+
+.booking-form--info {
+  align-content: start;
 }
 
 .about__intro {
@@ -786,6 +807,89 @@ li {
   padding: 0.9rem 1rem;
 }
 
+.booking-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 180ms ease, visibility 180ms ease;
+}
+
+.booking-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.booking-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 4, 8, 0.74);
+  backdrop-filter: blur(8px);
+}
+
+.booking-modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(720px, 100%);
+  padding: 1.4rem;
+  background:
+    radial-gradient(circle at top, rgba(143, 77, 255, 0.16), transparent 32%),
+    linear-gradient(180deg, rgba(23, 17, 33, 0.98), rgba(12, 9, 18, 0.97));
+}
+
+.booking-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(240, 211, 160, 0.1);
+}
+
+.booking-modal__service {
+  margin-bottom: 0;
+  color: var(--primary-strong);
+}
+
+.booking-modal__form {
+  display: grid;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.booking-modal__form label {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.booking-modal__form span {
+  color: var(--text);
+}
+
+.booking-modal__form input,
+.booking-modal__form textarea {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(211, 171, 111, 0.18);
+  background: linear-gradient(180deg, rgba(10, 8, 14, 0.72), rgba(20, 14, 30, 0.64));
+  color: var(--text);
+  transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.booking-modal__form input:focus,
+.booking-modal__form textarea:focus {
+  outline: 2px solid rgba(143, 77, 255, 0.16);
+  border-color: rgba(191, 125, 255, 0.44);
+  box-shadow: 0 0 0 4px rgba(143, 77, 255, 0.08);
+}
+
 @media (max-width: 980px) {
   .hero {
     min-height: auto;
@@ -846,6 +950,10 @@ li {
 
   .button {
     width: 100%;
+  }
+
+  .booking-modal__header {
+    flex-direction: column;
   }
 
   .hero__card {

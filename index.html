@@ -123,29 +123,60 @@
             <article class="service-card tarot-frame">
               <img src="images/service-reading.svg" alt="Servicio de lectura personalizada" />
               <div class="service-card__body">
-                <h3>Lectura personalizada</h3>
-                <p>Una lectura integral para revisar tu presente, ordenar emociones y abrir una comprension mas profunda de lo que estas viviendo.</p>
-                <a class="button button--secondary" href="#reservas">Quiero esta lectura</a>
+                <div class="service-card__kicker">
+                  <span>25 minutos</span>
+                  <span>3 preguntas</span>
+                </div>
+                <h3>Lectura general inicial</h3>
+                <p>Ideal si necesitas una primera claridad sin dar demasiadas vueltas: revisamos tu energia general y respondemos tres preguntas concretas para que salgas con foco, alivio y direccion.</p>
+                <button
+                  class="button button--secondary open-booking-modal"
+                  type="button"
+                  data-service="Lectura general inicial"
+                  data-summary="25 minutos, lectura general y 3 preguntas"
+                >
+                  Reservar esta lectura
+                </button>
               </div>
             </article>
 
             <article class="service-card tarot-frame">
               <img src="images/service-spread.svg" alt="Servicio de tirada especial" />
               <div class="service-card__body">
-                <h3>Tirada especial</h3>
-                <p>Enfocada en amor, trabajo, decisiones urgentes o cambios intensos donde necesitas una respuesta puntual y direccion clara.</p>
-                <a class="button button--secondary" href="#reservas">Necesito orientacion</a>
+                <div class="service-card__kicker">
+                  <span>$8.000</span>
+                  <span>4 preguntas</span>
+                </div>
+                <h3>Lectura general expandida</h3>
+                <p>Una opcion muy elegida cuando necesitas ir un poco mas alla: incluye lectura general, cuatro preguntas y el desarrollo completo de un caso puntual, con cierre y consejo para que sepas como avanzar.</p>
+                <button
+                  class="button button--secondary open-booking-modal"
+                  type="button"
+                  data-service="Lectura general expandida"
+                  data-summary="$8.000, lectura general, 4 preguntas, un caso desarrollado y consejo final"
+                >
+                  Quiero esta opcion
+                </button>
               </div>
             </article>
 
             <article class="service-card tarot-frame">
               <img src="images/service-guidance.svg" alt="Servicio de guia por WhatsApp" />
               <div class="service-card__body">
-                <h3>Guia por WhatsApp</h3>
-                <p>Ideal para una consulta breve, una duda puntual o para continuar integrando lo trabajado en una lectura previa.</p>
-                <a class="button button--secondary" href="https://wa.me/5492215047962?text=Hola%2C%20quiero%20consultar%20por%20los%20servicios" target="_blank" rel="noreferrer">
-                  Hablar ahora
-                </a>
+                <div class="service-card__kicker">
+                  <span>$10.000</span>
+                  <span>1 hora</span>
+                </div>
+                <h3>Lectura profunda completa</h3>
+                <p>Para quienes sienten que llego el momento de mirar en serio: una hora de lectura general, hasta seis preguntas y resolucion de un caso con profundidad, contexto y orientacion concreta.</p>
+                <button
+                  class="button button--secondary open-booking-modal"
+                  type="button"
+                  data-service="Lectura profunda completa"
+                  data-summary="$10.000, 1 hora, lectura general, hasta 6 preguntas y resolucion de caso"
+                >
+                  Solicitar esta lectura
+                </button>
               </div>
             </article>
           </div>
@@ -163,39 +194,23 @@
           </div>
 
           <div class="booking__layout">
-            <form class="panel booking-form" id="contact-form">
-              <div class="field-grid">
-                <label>
-                  <span>Nombre</span>
-                  <input type="text" name="nombre" placeholder="Como te llamas" required />
-                </label>
-                <label>
-                  <span>Apellido</span>
-                  <input type="text" name="apellido" placeholder="Tu apellido" required />
-                </label>
-              </div>
-
-              <div class="field-grid">
-                <label>
-                  <span>Email</span>
-                  <input type="email" name="email" placeholder="Tu mejor correo" required />
-                </label>
-                <label>
-                  <span>Telefono</span>
-                  <input type="tel" name="telefono" placeholder="Tu WhatsApp de contacto" required />
-                </label>
-              </div>
-
-              <label>
-                <span>Mensaje o detalles del pedido</span>
-                <textarea name="mensaje" rows="5" placeholder="Cuéntame qué te preocupa, qué deseas entender o qué tipo de lectura buscas" required></textarea>
-              </label>
-
+            <article class="panel booking-form booking-form--info">
+              <p class="eyebrow">Como funciona</p>
+              <h3>Elige tu lectura, completa tus datos y envia la solicitud directo por WhatsApp.</h3>
+              <p>
+                Al tocar cualquier boton de reserva se abre un modal simple donde dejas tu nombre, apellido, fecha de nacimiento, email y notas. En el mismo paso se prepara el mensaje con el servicio elegido para que la solicitud llegue ordenada y lista para responder.
+              </p>
               <div class="booking-form__actions">
-                <button class="button button--primary" type="submit">Enviar mi consulta</button>
-                <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+                <button
+                  class="button button--primary open-booking-modal"
+                  type="button"
+                  data-service="Consulta para definir lectura"
+                  data-summary="Solicitud abierta para recibir orientacion sobre la lectura mas conveniente"
+                >
+                  No se cual elegir
+                </button>
               </div>
-            </form>
+            </article>
 
             <aside class="panel booking-info tarot-frame">
               <p class="eyebrow">Por que dar el paso</p>
@@ -314,6 +329,57 @@
         <input id="chat-input" type="text" placeholder="Escribe tu duda y te orientamos" autocomplete="off" />
         <button class="button button--primary" type="submit">Enviar</button>
       </form>
+    </section>
+
+    <section class="booking-modal" id="booking-modal" aria-hidden="true">
+      <div class="booking-modal__overlay" data-close-modal="true"></div>
+      <div class="booking-modal__dialog panel tarot-frame" role="dialog" aria-modal="true" aria-labelledby="booking-modal-title">
+        <div class="booking-modal__header">
+          <div>
+            <p class="eyebrow">Solicitud de lectura</p>
+            <h3 id="booking-modal-title">Reserva tu espacio</h3>
+            <p class="booking-modal__service" id="booking-modal-service">Servicio seleccionado</p>
+          </div>
+          <button class="chatbot__close" type="button" data-close-modal="true" aria-label="Cerrar solicitud">Cerrar</button>
+        </div>
+
+        <form class="booking-modal__form" id="booking-modal-form">
+          <input id="selected-service" name="servicio" type="hidden" />
+          <input id="selected-summary" name="resumen" type="hidden" />
+
+          <div class="field-grid">
+            <label>
+              <span>Nombre</span>
+              <input type="text" name="nombre" placeholder="Tu nombre" required />
+            </label>
+            <label>
+              <span>Apellido</span>
+              <input type="text" name="apellido" placeholder="Tu apellido" required />
+            </label>
+          </div>
+
+          <div class="field-grid">
+            <label>
+              <span>Fecha de nacimiento</span>
+              <input type="date" name="fechaNacimiento" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" placeholder="Tu mejor correo" required />
+            </label>
+          </div>
+
+          <label>
+            <span>Notas</span>
+            <textarea name="notas" rows="4" placeholder="Si quieres, puedes contar brevemente tu situacion o el tema que deseas trabajar"></textarea>
+          </label>
+
+          <div class="booking-form__actions">
+            <button class="button button--primary" type="submit">Enviar solicitud</button>
+            <p class="form-message" id="booking-modal-message" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
     </section>
 
     <script src="js/chatbot.js"></script>
