@@ -20,16 +20,16 @@ const topicKnowledge = {
   servicios: {
     keywords: ['servicio', 'servicios', 'sesion', 'sesiones', 'lectura', 'lecturas'],
     answers: [
-      'Puedes presentar lecturas generales, tiradas especificas y acompanamiento por WhatsApp con un tono claro, sensible y profesional.',
-      'Si quieres vender mejor tus servicios, conviene mostrar para quien es cada lectura, que tipo de claridad aporta y como reservarla.',
+      'Puedes elegir entre una lectura personalizada, una tirada enfocada en un tema puntual o una guia breve por WhatsApp, segun lo que necesites mirar hoy.',
+      'Si no sabes cual te conviene, lo mejor es contar brevemente tu situacion y desde ahi orientarte hacia la lectura mas adecuada.',
       'Tambien puedes sumar duracion, modalidad y valor orientativo para reducir dudas antes del contacto.',
     ],
   },
   pedidos: {
     keywords: ['pedido', 'pedidos', 'orden', 'ordenes', 'reserva', 'reservas', 'turno', 'turnos'],
     answers: [
-      'La reserva esta pensada para que escribirte sea simple: pocos pasos, mensaje claro y posibilidad de seguir por WhatsApp.',
-      'Si la persona ya esta decidida, lo mejor es darle salida inmediata con un boton de contacto visible y un formulario breve como respaldo.',
+      'Reservar es simple: puedes dejar tu consulta en el formulario o escribir por WhatsApp para coordinar de manera directa.',
+      'Si ya sabes que quieres tu lectura, WhatsApp suele ser el camino mas rapido para resolver horarios, modalidad y siguientes pasos.',
       'Cuando quieras escalarlo, esta base puede conectarse con agenda, email o automatizaciones sin cambiar la experiencia visual.',
     ],
   },
@@ -39,6 +39,14 @@ const topicKnowledge = {
       'Puedes mostrar valores orientativos o responder por WhatsApp si prefieres una atencion mas personalizada y cercana.',
       'Si quieres cuidar una percepcion premium, funciona muy bien mostrar precios desde y ampliar detalles en la conversacion.',
       'Otra opcion es destacar promociones, sesiones especiales o combos sin recargar la pagina principal.',
+    ],
+  },
+  modalidad: {
+    keywords: ['online', 'whatsapp', 'virtual', 'modalidad', 'presencial', 'distancia'],
+    answers: [
+      'La experiencia esta pensada para resolverse de forma online y con contacto directo por WhatsApp, para que puedas acceder desde donde estes.',
+      'Si necesitas una modalidad puntual, lo mejor es escribir directamente y asi coordinar la forma mas comoda para ti.',
+      'La prioridad es que la lectura sea clara, cercana y facil de sostener, sin complicarte el proceso previo.',
     ],
   },
 };
@@ -153,7 +161,7 @@ function getBotReply(text) {
     lastTopic: null,
   });
 
-  return 'Puedo ayudarte con servicios, reservas, precios y dudas frecuentes. Si eliges un tema o me haces una pregunta directa, te respondo con mas contexto.';
+  return 'Puedo ayudarte con lecturas, reservas, modalidad, precios y dudas frecuentes. Si eliges un tema o me haces una pregunta directa, te respondo con mas contexto.';
 }
 
 function toggleChatbot(forceOpen) {
