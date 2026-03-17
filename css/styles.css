@@ -19,6 +19,12 @@
   --radius-md: 22px;
   --radius-sm: 16px;
   --max-width: 1180px;
+  --floating-edge: 1rem;
+  --floating-base-bottom: 1rem;
+  --floating-cards-bottom: 5.9rem;
+  --floating-chatbot-bottom: 5.75rem;
+  --floating-card-modal-bottom: 10.35rem;
+  --floating-reopen-bottom: 10.7rem;
 }
 
 * {
@@ -825,14 +831,14 @@ li {
 }
 
 .floating-button--whatsapp {
-  right: 1rem;
+  right: var(--floating-edge);
   background: #25d366;
   color: #06140a;
 }
 
 .floating-button--cards {
-  left: 1rem;
-  bottom: 5.9rem;
+  left: var(--floating-edge);
+  bottom: var(--floating-cards-bottom);
   width: min(148px, calc(100vw - 2rem));
   justify-content: flex-start;
   background:
@@ -854,7 +860,7 @@ li {
 }
 
 .floating-button--chat {
-  left: 1rem;
+  left: var(--floating-edge);
   background:
     radial-gradient(circle at top, rgba(126, 227, 214, 0.14), transparent 45%),
     radial-gradient(circle at 78% 18%, rgba(176, 123, 255, 0.14), transparent 24%),
@@ -962,8 +968,8 @@ li {
 
 .chatbot {
   position: fixed;
-  left: 1rem;
-  bottom: 5.75rem;
+  left: var(--floating-edge);
+  bottom: var(--floating-chatbot-bottom);
   z-index: 24;
   width: min(360px, calc(100% - 2rem));
   border-radius: 28px;
@@ -1103,8 +1109,8 @@ li {
 
 .card-reading-modal {
   position: fixed;
-  left: 1rem;
-  bottom: 10.35rem;
+  left: var(--floating-edge);
+  bottom: var(--floating-card-modal-bottom);
   z-index: 26;
   width: min(620px, calc(100% - 2rem));
   opacity: 0;
@@ -1252,6 +1258,7 @@ li {
 
 .card-pick__face--back {
   transform: rotateY(180deg);
+  align-content: center;
   background:
     radial-gradient(circle at top, rgba(118, 221, 255, 0.18), transparent 38%),
     linear-gradient(180deg, rgba(20, 13, 38, 0.99), rgba(9, 7, 18, 0.99));
@@ -1264,11 +1271,22 @@ li {
 }
 
 .card-pick__reserve {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.1rem;
+  min-width: 6.5rem;
+  margin-top: 0.2rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(235, 198, 122, 0.3);
+  background: linear-gradient(135deg, rgba(241, 221, 170, 0.16), rgba(176, 123, 255, 0.2));
   color: var(--primary);
   font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
 }
 
 .card-pick__mark {
@@ -1433,8 +1451,8 @@ li {
 
 .card-reading-reopen {
   position: fixed;
-  left: 1rem;
-  bottom: 10.7rem;
+  left: var(--floating-edge);
+  bottom: var(--floating-reopen-bottom);
   z-index: 26;
   min-width: 76px;
   min-height: 86px;
@@ -1664,17 +1682,21 @@ li {
   position: sticky;
   bottom: 0;
   z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
   padding-top: 0.85rem;
   padding-bottom: 0.2rem;
   background: linear-gradient(180deg, rgba(5, 4, 10, 0), rgba(5, 4, 10, 0.92) 28%, rgba(5, 4, 10, 0.98));
 }
 
 .booking-modal__form .booking-form__actions .button {
-  flex: 1 1 220px;
+  width: auto;
+  min-width: 0;
 }
 
 .booking-modal__form .booking-form__actions .form-message {
-  flex: 1 1 100%;
+  grid-column: 1 / -1;
 }
 
 @media (max-width: 980px) {
@@ -1692,7 +1714,7 @@ li {
   }
 
   .services-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .card-reading-modal {
@@ -1705,6 +1727,15 @@ li {
 }
 
 @media (max-width: 760px) {
+  :root {
+    --floating-edge: 0.5rem;
+    --floating-base-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+    --floating-cards-bottom: calc(var(--floating-base-bottom) + 4.5rem);
+    --floating-chatbot-bottom: calc(var(--floating-base-bottom) + 4.4rem);
+    --floating-card-modal-bottom: calc(var(--floating-base-bottom) + 8.85rem);
+    --floating-reopen-bottom: calc(var(--floating-base-bottom) + 9.3rem);
+  }
+
   .menu-toggle {
     display: inline-flex;
     align-items: center;
@@ -1749,12 +1780,12 @@ li {
   }
 
   .field-grid,
+  .services-grid,
   .hero__metrics {
     grid-template-columns: 1fr;
   }
 
   .hero__actions,
-  .booking-form__actions,
   .footer__content,
   .footer__links {
     flex-direction: column;
@@ -1864,6 +1895,7 @@ li {
   }
 
   .booking-modal__form .booking-form__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
     padding-bottom: calc(0.4rem + env(safe-area-inset-bottom, 0px));
   }
@@ -1888,9 +1920,7 @@ li {
   }
 
   .card-reading-modal {
-    bottom: calc(9.35rem + env(safe-area-inset-bottom, 0px));
     width: min(312px, calc(100% - 1rem));
-    left: 0.5rem;
   }
 
   .card-reading-modal__dialog {
@@ -1899,8 +1929,6 @@ li {
   }
 
   .card-reading-reopen {
-    left: 0.5rem;
-    bottom: calc(9.8rem + env(safe-area-inset-bottom, 0px));
     min-width: 70px;
     min-height: 78px;
   }
@@ -1920,24 +1948,18 @@ li {
   }
 
   .floating-button--whatsapp {
-    right: 0.5rem;
+    right: var(--floating-edge);
   }
 
-  .floating-button--chat,
-  .floating-button--cards,
-  .floating-button--whatsapp {
-    bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+  .card-reading-modal__topbar {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .floating-button--chat {
-    left: 0.5rem;
+  .card-reading-modal__topbar .chatbot__close {
+    align-self: flex-start;
   }
 
-  .floating-button--cards {
-    bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
-  }
-
-  .card-reading-modal__topbar,
   .card-reading-modal__layout {
     grid-template-columns: 1fr;
   }
@@ -1963,8 +1985,6 @@ li {
   }
 
   .chatbot {
-    left: 0.5rem;
-    bottom: calc(4.9rem + env(safe-area-inset-bottom, 0px));
     width: min(380px, calc(100% - 1rem));
     border-radius: 26px;
     padding: 0.95rem;
@@ -1986,6 +2006,13 @@ li {
 }
 
 @media (max-width: 520px) {
+  :root {
+    --floating-cards-bottom: calc(var(--floating-base-bottom) + 4.15rem);
+    --floating-chatbot-bottom: calc(var(--floating-base-bottom) + 4.05rem);
+    --floating-card-modal-bottom: calc(var(--floating-base-bottom) + 8.1rem);
+    --floating-reopen-bottom: calc(var(--floating-base-bottom) + 8.55rem);
+  }
+
   .container {
     width: min(100% - 1rem, var(--max-width));
   }
@@ -2031,8 +2058,6 @@ li {
 
   .floating-button--cards {
     width: 120px;
-    bottom: calc(4.65rem + env(safe-area-inset-bottom, 0px));
-    left: 0.5rem;
   }
 
   .floating-button--chat,
@@ -2041,12 +2066,7 @@ li {
   }
 
   .card-reading-modal {
-    bottom: calc(8.6rem + env(safe-area-inset-bottom, 0px));
     width: calc(100% - 1rem);
-  }
-
-  .card-reading-reopen {
-    bottom: calc(9.05rem + env(safe-area-inset-bottom, 0px));
   }
 
   .card-reading-modal__cards {
@@ -2055,6 +2075,10 @@ li {
 
   .card-pick {
     min-height: 104px;
+  }
+
+  .booking-modal__form .booking-form__actions {
+    grid-template-columns: 1fr;
   }
 
   .card-reading-modal__header h3,

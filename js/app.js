@@ -429,8 +429,16 @@ if (testimonialsTrack && testimonialSlides.length > 0) {
 }
 
 cardReadingCards.forEach((button) => {
-  button.addEventListener('click', () => {
+  button.addEventListener('click', (event) => {
+    const target = event.target;
+    const clickedReserve = target instanceof HTMLElement && target.closest('.card-pick__reserve');
+
     if (button.classList.contains('is-selected')) {
+      if (clickedReserve) {
+        setCardReadingDrawerState('hidden');
+        openBookingFlow(selectedCardService, selectedCardSummary, button);
+      }
+
       return;
     }
 
@@ -447,11 +455,6 @@ cardReadingCards.forEach((button) => {
       kicker: 'Carta Rider seleccionada',
       text: button.getAttribute('data-reading') || '',
     });
-
-    window.setTimeout(() => {
-      setCardReadingDrawerState('hidden');
-      openBookingFlow(selectedCardService, selectedCardSummary, button);
-    }, 760);
   });
 });
 
