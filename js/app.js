@@ -7,8 +7,21 @@ const bookingModalService = document.getElementById('booking-modal-service');
 const selectedService = document.getElementById('selected-service');
 const selectedSummary = document.getElementById('selected-summary');
 const modalMessage = document.getElementById('booking-modal-message');
+const cardReadingModal = document.getElementById('card-reading-modal');
+const cardReadingCards = document.querySelectorAll('.card-pick');
+const cardReadingResult = document.getElementById('card-reading-result');
+const cardReadingKicker = document.getElementById('card-reading-kicker');
+const cardReadingText = document.getElementById('card-reading-text');
+const cardReadingBookButton = document.getElementById('card-reading-book');
+const testimonialsTrack = document.getElementById('testimonials-track');
+const testimonialsDots = document.getElementById('testimonials-dots');
+const testimonialSlides = Array.from(document.querySelectorAll('.testimonials-carousel__slide'));
+const promoModal = document.getElementById('promo-modal');
 const whatsappNumber = '5492215047962';
 let lastModalTrigger = null;
+let selectedCardService = 'Reserva de lectura';
+let selectedCardSummary = 'Solicitud abierta desde el modal de cartas';
+let activeTestimonialIndex = 0;
 
 // IDs/names de los campos a persistir
 const bookingFields = [
@@ -108,25 +121,50 @@ function toggleBookingModal(forceOpen) {
   }
 }
 
+function toggleCardReadingModal(forceOpen) {
+  if (!cardReadingModal) {
+    return;
+  }
+
+  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !cardReadingModal.classList.contains('is-open');
+  cardReadingModal.classList.toggle('is-open', shouldOpen);
+  cardReadingModal.setAttribute('aria-hidden', String(!shouldOpen));
+}
+
+function togglePromoModal(forceOpen) {
+  if (!promoModal) {
+    return;
+  }
+
+  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !promoModal.classList.contains('is-open');
+  promoModal.classList.toggle('is-open', shouldOpen);
+  promoModal.setAttribute('aria-hidden', String(!shouldOpen));
+}
+
+function openBookingFlow(service, summary, trigger) {
+  lastModalTrigger = trigger instanceof HTMLElement ? trigger : lastModalTrigger;
+
+  if (bookingModalService) {
+    bookingModalService.textContent = `${service} · ${summary}`;
+  }
+
+  if (selectedService) {
+    selectedService.value = service;
+  }
+
+  if (selectedSummary) {
+    selectedSummary.value = summary;
+  }
+
+  toggleBookingModal(true);
+}
+
 modalButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    lastModalTrigger = button;
     const service = button.getAttribute('data-service') || 'Consulta general';
     const summary = button.getAttribute('data-summary') || '';
 
-    if (bookingModalService) {
-      bookingModalService.textContent = `${service} · ${summary}`;
-    }
-
-    if (selectedService) {
-      selectedService.value = service;
-    }
-
-    if (selectedSummary) {
-      selectedSummary.value = summary;
-    }
-
-    toggleBookingModal(true);
+    openBookingFlow(service, summary, button);
   });
 });
 
@@ -141,6 +179,113 @@ if (bookingModal) {
     if (target.dataset.closeModal === 'true') {
       toggleBookingModal(false);
     }
+  });
+}
+
+if (cardReadingModal) {
+  cardReadingModal.addEventListener('click', (event) => {
+    const target = event.target;
+
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    if (target.dataset.closeCardsModal === 'true') {
+      toggleCardReadingModal(false);
+    }
+  });
+}
+
+if (promoModal) {
+  promoModal.addEventListener('click', (event) => {
+    const target = event.target;
+
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    if (target.dataset.closePromoModal === 'true') {
+      togglePromoModal(false);
+    }
+  });
+}
+
+function renderTestimonialDots() {
+  if (!testimonialsDots || testimonialSlides.length === 0) {
+    return;
+  }
+
+  testimonialsDots.innerHTML = '';
+
+  testimonialSlides.forEach((_, index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'testimonials-carousel__dot';
+    dot.setAttribute('aria-label', `Ver testimonio ${index + 1}`);
+
+    if (index === activeTestimonialIndex) {
+      dot.classList.add('is-active');
+    }
+
+    dot.addEventListener('click', () => {
+      activeTestimonialIndex = index;
+      updateTestimonialsCarousel();
+    });
+
+    testimonialsDots.appendChild(dot);
+  });
+}
+
+function updateTestimonialsCarousel() {
+  if (!testimonialsTrack || testimonialSlides.length === 0) {
+    return;
+  }
+
+  testimonialsTrack.style.transform = `translateX(-${activeTestimonialIndex * 100}%)`;
+
+  if (testimonialsDots) {
+    Array.from(testimonialsDots.children).forEach((dot, index) => {
+      dot.classList.toggle('is-active', index === activeTestimonialIndex);
+    });
+  }
+}
+
+if (testimonialsTrack && testimonialSlides.length > 0) {
+  renderTestimonialDots();
+  updateTestimonialsCarousel();
+
+  window.setInterval(() => {
+    activeTestimonialIndex = (activeTestimonialIndex + 1) % testimonialSlides.length;
+    updateTestimonialsCarousel();
+  }, 2000);
+}
+
+cardReadingCards.forEach((button) => {
+  button.addEventListener('click', () => {
+    cardReadingCards.forEach((cardButton) => cardButton.classList.remove('is-selected'));
+    button.classList.add('is-selected');
+
+    selectedCardService = button.getAttribute('data-service') || 'Reserva de lectura';
+    selectedCardSummary = button.getAttribute('data-summary') || 'Solicitud abierta desde el modal de cartas';
+
+    if (cardReadingKicker) {
+      cardReadingKicker.textContent = button.getAttribute('data-title') || 'Carta elegida';
+    }
+
+    if (cardReadingText) {
+      cardReadingText.textContent = button.getAttribute('data-reading') || '';
+    }
+
+    if (cardReadingResult) {
+      cardReadingResult.hidden = false;
+    }
+  });
+});
+
+if (cardReadingBookButton) {
+  cardReadingBookButton.addEventListener('click', () => {
+    toggleCardReadingModal(false);
+    openBookingFlow(selectedCardService, selectedCardSummary, cardReadingBookButton);
   });
 }
 
@@ -206,4 +351,30 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && bookingModal?.classList.contains('is-open')) {
     toggleBookingModal(false);
   }
+
+  if (event.key === 'Escape' && cardReadingModal?.classList.contains('is-open')) {
+    toggleCardReadingModal(false);
+  }
+
+  if (event.key === 'Escape' && promoModal?.classList.contains('is-open')) {
+    togglePromoModal(false);
+  }
 });
+
+window.setTimeout(() => {
+  const shouldSkipOpening = bookingModal?.classList.contains('is-open') || cardReadingModal?.classList.contains('is-open');
+
+  if (!shouldSkipOpening && cardReadingModal && !window.sessionStorage.getItem('anima-card-reading-shown')) {
+    toggleCardReadingModal(true);
+    window.sessionStorage.setItem('anima-card-reading-shown', 'true');
+  }
+}, 5000);
+
+window.setTimeout(() => {
+  const shouldSkipPromo = bookingModal?.classList.contains('is-open') || cardReadingModal?.classList.contains('is-open') || promoModal?.classList.contains('is-open');
+
+  if (!shouldSkipPromo && promoModal && !window.sessionStorage.getItem('anima-one-to-one-shown')) {
+    togglePromoModal(true);
+    window.sessionStorage.setItem('anima-one-to-one-shown', 'true');
+  }
+}, 15000);

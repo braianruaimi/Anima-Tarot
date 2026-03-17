@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
+    <div class="install-banner" id="install-banner">
+      <button class="button button--secondary install-button" type="button">
+        Instalar app
+      </button>
+    </div>
+
     <div class="page-shell">
       <header class="hero" id="inicio">
         <nav class="navbar container">
@@ -43,9 +49,6 @@
               <a class="button button--primary" href="https://wa.me/5492215047962?text=Hola%2C%20quiero%20hacer%20una%20consulta%20con%20Anima%20Tarot" target="_blank" rel="noreferrer">
                 Reservar por WhatsApp
               </a>
-              <button class="button button--secondary install-button" type="button">
-                Instalar app
-              </button>
             </div>
 
             <div class="hero__metrics">
@@ -186,28 +189,28 @@
           <div class="section-heading section-heading--split">
             <div>
               <p class="eyebrow">Reserva tu lectura</p>
-              <h2>Cuéntame brevemente tu momento y te orientare hacia la mejor forma de abordarlo.</h2>
+              <h2>Cuando sientas que es el momento, reserva desde aqui y pasa directo al formulario flotante.</h2>
             </div>
             <p>
-              Si no sabes que lectura elegir, escribe igual. Puedo ayudarte a definirlo segun tu situacion y coordinar contigo de la manera mas simple.
+              Puedes abrir el formulario ahora mismo y dejar tu solicitud en pocos pasos, o esperar la lectura breve de cartas para entrar con una orientacion inicial.
             </p>
           </div>
 
           <div class="booking__layout">
             <article class="panel booking-form booking-form--info">
-              <p class="eyebrow">Reserva guiada</p>
-              <h3>Si todavia no sabes que lectura elegir, puedo orientarte antes de que reserves.</h3>
+              <p class="eyebrow">Reserva directa</p>
+              <h3>Abre el formulario flotante, completa tus datos y deja tu solicitud ahora.</h3>
               <p>
-                Cuéntame brevemente tu momento y te indico la opcion mas afin para empezar con claridad, sin vueltas y con una recomendacion pensada para lo que hoy necesitas mirar.
+                Este acceso te lleva directo al modal de reserva para que elijas tu servicio, completes tus datos y envies la consulta ordenada por WhatsApp sin salir del sitio.
               </p>
               <div class="booking-form__actions">
                 <button
                   class="button button--primary open-booking-modal"
                   type="button"
-                  data-service="Consulta para definir lectura"
-                  data-summary="Solicitud abierta para recibir orientacion sobre la lectura mas conveniente"
+                  data-service="Reserva de lectura"
+                  data-summary="Solicitud directa desde la seccion principal de reservas"
                 >
-                  Quiero que me orienten
+                  Reservar
                 </button>
               </div>
             </article>
@@ -231,25 +234,60 @@
             <h2>Cuando la lectura resuena, algo interno empieza a ordenarse.</h2>
           </div>
 
-          <div class="testimonials-grid">
-            <article class="panel testimonial-card">
-              <p>
-                “Sentí contención, claridad y mucha precisión. Salí de la sesión con calma y una dirección mucho más concreta.”
-              </p>
-              <strong>Lucia M.</strong>
-            </article>
-            <article class="panel testimonial-card">
-              <p>
-                “Me senti escuchada de verdad. No fue una lectura vacia: me ayudó a ver con claridad lo que venia evitando mirar.”
-              </p>
-              <strong>Camila R.</strong>
-            </article>
-            <article class="panel testimonial-card">
-              <p>
-                “La calidez, la profundidad y la forma de explicar lo que aparecía me dejaron una sensación de mucha certeza.”
-              </p>
-              <strong>Sofia P.</strong>
-            </article>
+          <div class="testimonials-carousel panel tarot-frame">
+            <div class="testimonials-carousel__viewport">
+              <div class="testimonials-carousel__track" id="testimonials-track">
+                <article class="testimonial-card testimonials-carousel__slide">
+                  <p>
+                    “Sentí contención, claridad y mucha precisión. Salí de la sesión con calma y una dirección mucho más concreta.”
+                  </p>
+                  <strong>Lucia M.</strong>
+                </article>
+                <article class="testimonial-card testimonials-carousel__slide">
+                  <p>
+                    “Me senti escuchada de verdad. No fue una lectura vacia: me ayudó a ver con claridad lo que venia evitando mirar.”
+                  </p>
+                  <strong>Camila R.</strong>
+                </article>
+                <article class="testimonial-card testimonials-carousel__slide">
+                  <p>
+                    “La calidez, la profundidad y la forma de explicar lo que aparecía me dejaron una sensación de mucha certeza.”
+                  </p>
+                  <strong>Sofia P.</strong>
+                </article>
+                <article class="testimonial-card testimonials-carousel__slide">
+                  <p>
+                    “Llegué con ansiedad y salí con una comprensión mucho más amable de lo que estaba viviendo. Fue muy precisa.”
+                  </p>
+                  <strong>Marina T.</strong>
+                </article>
+                <article class="testimonial-card testimonials-carousel__slide">
+                  <p>
+                    “No solo me dijo cosas que resonaron: me ayudó a ordenar lo emocional y a decidir con más firmeza.”
+                  </p>
+                  <strong>Valentina G.</strong>
+                </article>
+                <article class="testimonial-card testimonials-carousel__slide">
+                  <p>
+                    “La lectura fue profunda pero clara. Me fui con respuestas, pero también con paz para procesar lo que venía sintiendo.”
+                  </p>
+                  <strong>Rocio F.</strong>
+                </article>
+                <article class="testimonial-card testimonials-carousel__slide">
+                  <p>
+                    “Se sintió humano, íntimo y muy profesional. No fue una lectura genérica: sentí que hablaba directamente de mi momento.”
+                  </p>
+                  <strong>Julieta C.</strong>
+                </article>
+                <article class="testimonial-card testimonials-carousel__slide">
+                  <p>
+                    “Me ayudó a ver un vínculo desde otro lugar. Eso solo ya hizo que valiera totalmente la experiencia.”
+                  </p>
+                  <strong>Paula S.</strong>
+                </article>
+              </div>
+            </div>
+            <div class="testimonials-carousel__dots" id="testimonials-dots" aria-label="Indicadores de testimonios"></div>
           </div>
         </section>
 
@@ -403,6 +441,72 @@
             <p class="form-message" id="booking-modal-message" role="status" aria-live="polite"></p>
           </div>
         </form>
+      </div>
+    </section>
+
+    <section class="card-reading-modal" id="card-reading-modal" aria-hidden="true">
+      <div class="card-reading-modal__overlay" data-close-cards-modal="true"></div>
+      <div class="card-reading-modal__dialog panel tarot-frame" role="dialog" aria-modal="true" aria-labelledby="card-reading-title">
+        <div class="card-reading-modal__header">
+          <div>
+            <p class="eyebrow">Mensaje intuitivo</p>
+            <h3 id="card-reading-title">Elige una carta y recibe una señal breve para este momento.</h3>
+          </div>
+          <button class="chatbot__close" type="button" data-close-cards-modal="true" aria-label="Cerrar lectura breve">Cerrar</button>
+        </div>
+
+        <div class="card-reading-modal__cards" id="card-reading-cards">
+          <button class="card-pick tarot-frame" type="button" data-card="luna" data-service="Lectura intuitiva de claridad" data-summary="Reserva sugerida desde la carta La Luna" data-title="La Luna" data-reading="Hay algo importante moviendose por debajo de la superficie. Esta carta habla de intuicion, emociones intensas y necesidad de ver con claridad lo que hoy aun no tiene forma completa.">
+            <span class="card-pick__mark">I</span>
+            <strong>La Luna</strong>
+          </button>
+          <button class="card-pick tarot-frame" type="button" data-card="estrella" data-service="Lectura de apertura y proyeccion" data-summary="Reserva sugerida desde la carta La Estrella" data-title="La Estrella" data-reading="Esta carta trae alivio, recuperacion y direccion. Senala que hay una energia de renacer, pero necesita una lectura clara para convertir esperanza en movimiento concreto.">
+            <span class="card-pick__mark">II</span>
+            <strong>La Estrella</strong>
+          </button>
+          <button class="card-pick tarot-frame" type="button" data-card="torre" data-service="Lectura profunda para cambios fuertes" data-summary="Reserva sugerida desde la carta La Torre" data-title="La Torre" data-reading="Hay una estructura interna o externa que ya no puede sostenerse igual. Esta carta pide verdad, decision y una lectura que te ayude a atravesar el cambio sin confundirte mas.">
+            <span class="card-pick__mark">III</span>
+            <strong>La Torre</strong>
+          </button>
+        </div>
+
+        <div class="card-reading-modal__result" id="card-reading-result" hidden>
+          <p class="eyebrow" id="card-reading-kicker">Carta elegida</p>
+          <p class="card-reading-modal__text" id="card-reading-text"></p>
+          <div class="booking-form__actions">
+            <button class="button button--primary" type="button" id="card-reading-book">
+              Quiero reservar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="promo-modal" id="promo-modal" aria-hidden="true">
+      <div class="promo-modal__overlay" data-close-promo-modal="true"></div>
+      <div class="promo-modal__dialog panel tarot-frame" role="dialog" aria-modal="true" aria-labelledby="promo-modal-title">
+        <div class="promo-modal__header">
+          <div>
+            <p class="eyebrow">Espacio personalizado</p>
+            <h3 id="promo-modal-title">Quiero un 1 a 1</h3>
+          </div>
+          <button class="chatbot__close" type="button" data-close-promo-modal="true" aria-label="Cerrar invitacion 1 a 1">Cerrar</button>
+        </div>
+
+        <p>
+          Si sientes que necesitas una mirada mas personal, este espacio 1 a 1 te permite abrir tu proceso con mas profundidad, contencion y una lectura pensada para ti, no para una consulta generica.
+        </p>
+
+        <div class="booking-form__actions">
+          <a
+            class="button button--primary"
+            href="https://wa.me/5492215047962?text=Hola%2C%20quiero%20un%201%20a%201%20con%20Anima%20Tarot.%20Me%20gustaria%20recibir%20informacion%20y%20reservar."
+            target="_blank"
+            rel="noreferrer"
+          >
+            Reservar
+          </a>
+        </div>
       </div>
     </section>
 

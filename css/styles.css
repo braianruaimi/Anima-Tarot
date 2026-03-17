@@ -34,11 +34,23 @@ body {
   min-width: 320px;
   color: var(--text);
   background:
-    radial-gradient(circle at top, rgba(118, 221, 255, 0.16), transparent 24%),
+    radial-gradient(circle at 50% -8%, rgba(210, 103, 255, 0.2), transparent 28%),
     radial-gradient(circle at 100% 0, rgba(123, 66, 255, 0.22), transparent 26%),
-    radial-gradient(circle at 18% 78%, rgba(210, 103, 255, 0.12), transparent 22%),
-    linear-gradient(180deg, #0d0818 0%, #05040a 100%);
+    radial-gradient(circle at 18% 78%, rgba(210, 103, 255, 0.1), transparent 22%),
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.08), transparent 56%),
+    linear-gradient(180deg, #090511 0%, #030208 100%);
   font-family: Georgia, 'Times New Roman', serif;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 50% 28%, transparent 0%, rgba(5, 3, 10, 0.1) 38%, rgba(2, 1, 4, 0.52) 100%),
+    radial-gradient(circle at 50% 120%, rgba(71, 30, 124, 0.18), transparent 36%);
 }
 
 img {
@@ -73,6 +85,30 @@ ul {
   overflow: hidden;
 }
 
+.install-banner {
+  position: fixed;
+  top: 0.75rem;
+  left: 50%;
+  z-index: 30;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  width: min(calc(100% - 2rem), 420px);
+  transition: opacity 220ms ease, transform 220ms ease, visibility 220ms ease;
+}
+
+.install-banner.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-14px);
+}
+
+.install-banner .install-button {
+  width: 100%;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
+}
+
 .page-shell::before,
 .page-shell::after {
   content: '';
@@ -89,13 +125,13 @@ ul {
 .page-shell::before {
   top: -8rem;
   left: -10rem;
-  background: radial-gradient(circle, rgba(143, 77, 255, 0.3), transparent 64%);
+  background: radial-gradient(circle, rgba(143, 77, 255, 0.38), transparent 64%);
 }
 
 .page-shell::after {
   top: 24rem;
   right: -12rem;
-  background: radial-gradient(circle, rgba(118, 221, 255, 0.24), transparent 68%);
+  background: radial-gradient(circle, rgba(118, 221, 255, 0.28), transparent 68%);
 }
 
 main {
@@ -106,6 +142,7 @@ main {
 .hero {
   position: relative;
   min-height: 100vh;
+  padding-top: 4rem;
   padding-bottom: 3rem;
 }
 
@@ -156,7 +193,7 @@ main {
   top: 0;
   width: min(100% - 2rem, var(--max-width));
   margin-inline: auto;
-  z-index: 10;
+  z-index: 12;
   backdrop-filter: blur(16px);
   background: linear-gradient(180deg, rgba(14, 11, 20, 0.84), rgba(14, 11, 20, 0.42));
   border: 1px solid rgba(118, 221, 255, 0.14);
@@ -339,7 +376,7 @@ li {
 .testimonial-card,
 .cta-final__panel,
 .chatbot {
-  border: 1px solid var(--line);
+  border: 1px solid rgba(118, 221, 255, 0.28);
   box-shadow: var(--shadow);
 }
 
@@ -362,7 +399,7 @@ li {
 .testimonial-card,
 .cta-final__panel {
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(27, 20, 38, 0.92), rgba(17, 13, 24, 0.9));
+  background: linear-gradient(180deg, rgba(22, 14, 40, 0.94), rgba(10, 7, 18, 0.94));
 }
 
 .hero__card {
@@ -562,7 +599,7 @@ li {
 
 .booking-form,
 .booking-info {
-  background: linear-gradient(180deg, rgba(26, 19, 36, 0.96), rgba(16, 12, 24, 0.92));
+  background: linear-gradient(180deg, rgba(24, 15, 44, 0.98), rgba(11, 8, 21, 0.96));
 }
 
 .field-grid {
@@ -615,6 +652,60 @@ li {
 
 .testimonials-grid {
   align-items: stretch;
+}
+
+.testimonials-carousel {
+  padding: 1.4rem;
+}
+
+.testimonials-carousel__viewport {
+  overflow: hidden;
+  border-radius: 26px;
+}
+
+.testimonials-carousel__track {
+  display: flex;
+  transition: transform 420ms ease;
+  will-change: transform;
+}
+
+.testimonials-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  padding: 2rem 1.4rem;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.testimonials-carousel__slide:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.testimonials-carousel__dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  padding-top: 1rem;
+}
+
+.testimonials-carousel__dot {
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(118, 221, 255, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(118, 221, 255, 0.24);
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
+}
+
+.testimonials-carousel__dot.is-active {
+  background: linear-gradient(135deg, var(--cyan-electric), var(--lilac-electric));
+  transform: scale(1.1);
+  box-shadow: 0 0 18px rgba(210, 103, 255, 0.26);
 }
 
 .testimonial-card {
@@ -739,8 +830,8 @@ li {
   width: min(360px, calc(100% - 2rem));
   border-radius: 28px;
   background:
-    radial-gradient(circle at top, rgba(143, 77, 255, 0.24), transparent 42%),
-    rgba(14, 11, 20, 0.97);
+    radial-gradient(circle at top, rgba(123, 66, 255, 0.26), transparent 42%),
+    rgba(10, 8, 18, 0.98);
   padding: 1rem;
   opacity: 0;
   visibility: hidden;
@@ -864,8 +955,160 @@ li {
   width: min(720px, 100%);
   padding: 1.4rem;
   background:
-    radial-gradient(circle at top, rgba(143, 77, 255, 0.16), transparent 32%),
-    linear-gradient(180deg, rgba(23, 17, 33, 0.98), rgba(12, 9, 18, 0.97));
+    radial-gradient(circle at top, rgba(123, 66, 255, 0.2), transparent 32%),
+    linear-gradient(180deg, rgba(19, 13, 37, 0.99), rgba(9, 6, 16, 0.98));
+}
+
+.card-reading-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 38;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.card-reading-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.card-reading-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 3, 8, 0.74);
+  backdrop-filter: blur(8px);
+}
+
+.card-reading-modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(920px, 100%);
+  padding: 1.4rem;
+  background:
+    radial-gradient(circle at top, rgba(210, 103, 255, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(18, 11, 35, 0.99), rgba(8, 6, 16, 0.98));
+}
+
+.card-reading-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(118, 221, 255, 0.14);
+}
+
+.card-reading-modal__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding-top: 1.2rem;
+}
+
+.card-pick {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  min-height: 250px;
+  padding: 1.3rem;
+  border-radius: 28px;
+  border: 1px solid rgba(118, 221, 255, 0.22);
+  background:
+    radial-gradient(circle at top, rgba(123, 66, 255, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(25, 16, 45, 0.96), rgba(10, 8, 20, 0.98));
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.card-pick:hover,
+.card-pick.is-selected {
+  transform: translateY(-4px);
+  border-color: rgba(210, 103, 255, 0.46);
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(118, 221, 255, 0.12);
+}
+
+.card-pick__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(118, 221, 255, 0.22);
+  color: var(--primary);
+  box-shadow: 0 0 20px rgba(118, 221, 255, 0.14);
+}
+
+.card-pick strong {
+  font-size: 1.25rem;
+  color: var(--primary-strong);
+}
+
+.card-reading-modal__result {
+  margin-top: 1rem;
+  padding: 1.15rem;
+  border-radius: 24px;
+  border: 1px solid rgba(118, 221, 255, 0.18);
+  background: linear-gradient(180deg, rgba(11, 10, 23, 0.92), rgba(18, 14, 30, 0.9));
+}
+
+.card-reading-modal__text {
+  margin-bottom: 0;
+  font-size: 1.02rem;
+}
+
+.promo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.promo-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.promo-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 2, 8, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+.promo-modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  padding: 1.4rem;
+  background:
+    radial-gradient(circle at top, rgba(118, 221, 255, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(21, 13, 40, 0.99), rgba(8, 6, 16, 0.98));
+}
+
+.promo-modal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(118, 221, 255, 0.14);
+  margin-bottom: 1rem;
 }
 
 .booking-modal__header {
@@ -948,7 +1191,8 @@ li {
   .booking__layout,
   .benefits-grid,
   .services-grid,
-  .testimonials-grid {
+  .testimonials-grid,
+  .card-reading-modal__cards {
     grid-template-columns: 1fr;
   }
 }
@@ -963,6 +1207,7 @@ li {
   .navbar {
     border-radius: 26px;
     align-items: flex-start;
+    margin-top: 0;
   }
 
   .nav-links {
@@ -999,7 +1244,20 @@ li {
     width: 100%;
   }
 
+  .install-banner {
+    top: 0.5rem;
+    width: min(calc(100% - 1rem), 420px);
+  }
+
   .booking-modal__header {
+    flex-direction: column;
+  }
+
+  .card-reading-modal__header {
+    flex-direction: column;
+  }
+
+  .promo-modal__header {
     flex-direction: column;
   }
 
