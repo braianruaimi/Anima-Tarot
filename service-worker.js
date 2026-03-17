@@ -1,4 +1,4 @@
-const cacheName = 'anima-tarot-v7';
+const cacheName = 'anima-tarot-v8';
 const assetsToCache = [
   './',
   './index.html',
@@ -34,7 +34,55 @@ self.addEventListener('message', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  const requestUrl = new URL(event.request.url);
+  const isSameOrigin = requestUrl.origin === self.location.origin;
+  const isNavigationRequest = event.request.mode === 'navigate';
+
+  if (!isSameOrigin) {
+    return;
+  }
+
+  if (isNavigationRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          const responseClone = networkResponse.clone();
+
+          caches.open(cacheName).then((cache) => {
+            cache.put('./index.html', responseClone);
+          });
+
+          return networkResponse;
+        })
+        .catch(() => caches.match('./index.html')),
+    );
+
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => cachedResponse || fetch(event.request)),
+    caches.match(event.request).then((cachedResponse) => {
+      const networkFetch = fetch(event.request)
+        .then((networkResponse) => {
+          if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+            return networkResponse;
+          }
+
+          const responseClone = networkResponse.clone();
+
+          caches.open(cacheName).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
+
+          return networkResponse;
+        })
+        .catch(() => cachedResponse);
+
+      return cachedResponse || networkFetch;
+    }),
   );
 });

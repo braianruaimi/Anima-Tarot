@@ -117,7 +117,12 @@ if (installButton) {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('service-worker.js').then((registration) => {
+      registration.update();
       watchForWaitingWorker(registration);
+
+      window.setInterval(() => {
+        registration.update();
+      }, 60000);
 
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (isRefreshing) {
