@@ -33,25 +33,25 @@ const riderShowcaseCards = [
     arcana: 'II',
     title: 'La Sacerdotisa',
     kicker: 'Rider especialmente trabajado',
-    text: 'Intuicion, silencio y lectura fina de lo que todavia no se dijo. Este mazo se trabaja desde la simbologia Rider para detectar capas reales del proceso.',
+    text: 'Intuición, silencio y lectura fina de lo que todavía no se dijo. Este mazo se trabaja desde la simbología Rider para detectar capas reales del proceso.',
   },
   {
     arcana: 'IX',
     title: 'El Ermitaño',
     kicker: 'Lectura profunda Rider',
-    text: 'Tiempo de introspeccion, retiro consciente y verdad interior. Ideal cuando la consulta pide claridad madura y no una respuesta superficial.',
+    text: 'Tiempo de introspección, retiro consciente y verdad interior. Ideal cuando la consulta pide claridad madura y no una respuesta superficial.',
   },
   {
     arcana: 'XI',
     title: 'La Justicia',
-    kicker: 'Precision simbolica Rider',
-    text: 'Equilibrio, decisiones y consecuencias. En Rider esta energia ayuda a ordenar vinculos, limites y elecciones con mucha nitidez.',
+    kicker: 'Precisión simbólica Rider',
+    text: 'Equilibrio, decisiones y consecuencias. En Rider esta energía ayuda a ordenar vínculos, límites y elecciones con mucha nitidez.',
   },
   {
     arcana: 'XIX',
     title: 'El Sol',
     kicker: 'Apertura luminosa Rider',
-    text: 'Claridad, verdad y expansion. Muestra cuando algo ya esta listo para verse sin niebla y transformarse en accion concreta.',
+    text: 'Claridad, verdad y expansión. Muestra cuando algo ya está listo para verse sin niebla y transformarse en acción concreta.',
   },
 ];
 
@@ -489,14 +489,14 @@ if (bookingModalForm instanceof HTMLFormElement) {
     const notes = String(formData.get('notas') || '');
 
     const message = [
-      'Hola, quiero solicitar una lectura en Anima Tarot.',
+      'Hola, quiero solicitar una lectura en Ánima Tarot.',
       '',
       `Servicio: ${service}`,
       summary ? `Detalle: ${summary}` : '',
       `Nombre: ${name}`,
       `Apellido: ${lastName}`,
       `Fecha de nacimiento: ${birthDate}`,
-      `Horoscopo: ${horoscope}`,
+      `Horóscopo: ${horoscope}`,
       `Email: ${email}`,
       notes ? `Notas: ${notes}` : 'Notas: Sin notas adicionales.',
     ]

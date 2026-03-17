@@ -970,7 +970,7 @@ li {
   position: fixed;
   left: var(--floating-edge);
   bottom: var(--floating-chatbot-bottom);
-  z-index: 24;
+  z-index: 28;
   width: min(360px, calc(100% - 2rem));
   border-radius: 28px;
   background:
