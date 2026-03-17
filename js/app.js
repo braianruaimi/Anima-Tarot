@@ -20,6 +20,7 @@ const testimonialsTrack = document.getElementById('testimonials-track');
 const testimonialsDots = document.getElementById('testimonials-dots');
 const testimonialSlides = Array.from(document.querySelectorAll('.testimonials-carousel__slide'));
 const promoModal = document.getElementById('promo-modal');
+const chatbotPanel = document.querySelector('.chatbot');
 const whatsappNumber = '5492215047962';
 let lastModalTrigger = null;
 let selectedCardService = 'Reserva de lectura';
@@ -552,7 +553,11 @@ window.addEventListener('load', () => {
 setCardReadingDrawerState('hidden');
 
 window.setTimeout(() => {
-  const shouldSkipPromo = bookingModal?.classList.contains('is-open') || cardReadingModal?.classList.contains('is-open') || promoModal?.classList.contains('is-open');
+  const shouldSkipPromo =
+    bookingModal?.classList.contains('is-open') ||
+    cardReadingModal?.classList.contains('is-open') ||
+    promoModal?.classList.contains('is-open') ||
+    chatbotPanel?.classList.contains('is-open');
 
   if (!shouldSkipPromo && promoModal && !window.sessionStorage.getItem('anima-one-to-one-shown')) {
     togglePromoModal(true);

@@ -3,6 +3,7 @@ const chatbot = document.querySelector('.chatbot');
 const chatbotClose = chatbot?.querySelector('.chatbot__close') || null;
 const chatMessages = chatbot?.querySelector('#chat-messages') || null;
 const faqButtons = chatbot?.querySelectorAll('.chatbot__faq-chip') || [];
+const initialBotMessage = chatMessages?.querySelector('.chatbot__message--bot')?.textContent || '';
 
 const topicAnswers = {
   precios:
@@ -37,6 +38,18 @@ function appendMessage(content, type) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+function resetChatMessages() {
+  if (!chatMessages) {
+    return;
+  }
+
+  chatMessages.innerHTML = '';
+
+  if (initialBotMessage) {
+    appendMessage(initialBotMessage, 'bot');
+  }
+}
+
 function getBotReply(topic) {
   return topicAnswers[topic] || 'Puedes elegir una consulta frecuente y te respondo con una orientación breve antes de reservar.';
 }
@@ -69,6 +82,7 @@ faqButtons.forEach((button) => {
     }
 
     toggleChatbot(true);
+    resetChatMessages();
     appendMessage(question, 'user');
 
     window.setTimeout(() => {

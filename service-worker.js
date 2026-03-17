@@ -1,4 +1,4 @@
-const cacheName = 'anima-tarot-v11';
+const cacheName = 'anima-tarot-v12';
 const assetsToCache = [
   './',
   './index.html',
