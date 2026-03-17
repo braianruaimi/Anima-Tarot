@@ -835,8 +835,8 @@ li {
 
 .floating-button__cards {
   position: relative;
-  width: 1.15rem;
-  height: 1.1rem;
+  width: 1.3rem;
+  height: 1.25rem;
 }
 
 .floating-button__cards span {
@@ -849,11 +849,43 @@ li {
 }
 
 .floating-button__cards span:first-child {
-  transform: rotate(-9deg) translateX(-0.18rem);
+  transform: rotate(-10deg) translate(-0.22rem, 0.04rem);
 }
 
-.floating-button__cards span:last-child {
-  transform: rotate(8deg) translateX(0.18rem);
+.floating-button__cards span:nth-child(2) {
+  transform: rotate(8deg) translate(0.2rem, -0.03rem);
+}
+
+.floating-button__cards-sigil {
+  inset: 0.27rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.floating-button__cards-sigil::before,
+.floating-button__cards-sigil::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.floating-button__cards-sigil::before {
+  width: 0.44rem;
+  height: 0.44rem;
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 0 10px rgba(118, 221, 255, 0.2);
+}
+
+.floating-button__cards-sigil::after {
+  width: 0.82rem;
+  height: 0.82rem;
+  border: 1.5px solid currentColor;
+  clip-path: polygon(50% 0%, 61% 36%, 100% 50%, 61% 64%, 50% 100%, 39% 64%, 0% 50%, 39% 36%);
+  opacity: 0.9;
 }
 
 .chatbot {
