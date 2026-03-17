@@ -9,6 +9,33 @@ const selectedSummary = document.getElementById('selected-summary');
 const modalMessage = document.getElementById('booking-modal-message');
 const whatsappNumber = '5492215047962';
 
+// IDs/names de los campos a persistir
+const bookingFields = [
+  { name: 'nombre', selector: 'input[name="nombre"]' },
+  { name: 'apellido', selector: 'input[name="apellido"]' },
+  { name: 'fechaNacimiento', selector: 'input[name="fechaNacimiento"]' },
+  { name: 'email', selector: 'input[name="email"]' },
+  { name: 'notas', selector: 'textarea[name="notas"]' },
+];
+
+function saveBookingFieldsToLocalStorage() {
+  bookingFields.forEach(({ name, selector }) => {
+    const el = bookingModalForm?.querySelector(selector);
+    if (el) {
+      localStorage.setItem('booking_' + name, el.value);
+    }
+  });
+}
+
+function loadBookingFieldsFromLocalStorage() {
+  bookingFields.forEach(({ name, selector }) => {
+    const el = bookingModalForm?.querySelector(selector);
+    if (el && localStorage.getItem('booking_' + name)) {
+      el.value = localStorage.getItem('booking_' + name);
+    }
+  });
+}
+
 if (menuToggle && navLinks) {
   menuToggle.addEventListener('click', () => {
     const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
@@ -32,6 +59,11 @@ function toggleBookingModal(forceOpen) {
   const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !bookingModal.classList.contains('is-open');
   bookingModal.classList.toggle('is-open', shouldOpen);
   bookingModal.setAttribute('aria-hidden', String(!shouldOpen));
+
+  if (shouldOpen && bookingModalForm instanceof HTMLFormElement) {
+    // Al abrir, cargar datos guardados
+    loadBookingFieldsFromLocalStorage();
+  }
 
   if (!shouldOpen && bookingModalForm instanceof HTMLFormElement) {
     bookingModalForm.reset();
@@ -79,6 +111,9 @@ if (bookingModal) {
 if (bookingModalForm instanceof HTMLFormElement) {
   bookingModalForm.addEventListener('submit', (event) => {
     event.preventDefault();
+
+    // Guardar datos en localStorage
+    saveBookingFieldsToLocalStorage();
 
     const formData = new FormData(bookingModalForm);
     const service = String(formData.get('servicio') || 'Consulta general');
