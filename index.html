@@ -43,8 +43,8 @@
               <a class="button button--primary" href="https://wa.me/5492215047962?text=Hola%2C%20quiero%20hacer%20una%20consulta%20con%20Anima%20Tarot" target="_blank" rel="noreferrer">
                 Reservar por WhatsApp
               </a>
-              <button class="button button--secondary install-button" type="button" hidden>
-                Instalar experiencia
+              <button class="button button--secondary install-button" type="button">
+                Instalar app
               </button>
             </div>
 
@@ -195,10 +195,10 @@
 
           <div class="booking__layout">
             <article class="panel booking-form booking-form--info">
-              <p class="eyebrow">Como funciona</p>
-              <h3>Elige tu lectura, completa tus datos y envia la solicitud directo por WhatsApp.</h3>
+              <p class="eyebrow">Reserva guiada</p>
+              <h3>Si todavia no sabes que lectura elegir, puedo orientarte antes de que reserves.</h3>
               <p>
-                Al tocar cualquier boton de reserva se abre un modal simple donde dejas tu nombre, apellido, fecha de nacimiento, email y notas. En el mismo paso se prepara el mensaje con el servicio elegido para que la solicitud llegue ordenada y lista para responder.
+                Cuéntame brevemente tu momento y te indico la opcion mas afin para empezar con claridad, sin vueltas y con una recomendacion pensada para lo que hoy necesitas mirar.
               </p>
               <div class="booking-form__actions">
                 <button
@@ -207,7 +207,7 @@
                   data-service="Consulta para definir lectura"
                   data-summary="Solicitud abierta para recibir orientacion sobre la lectura mas conveniente"
                 >
-                  No se cual elegir
+                  Quiero que me orienten
                 </button>
               </div>
             </article>
@@ -294,8 +294,9 @@
       WhatsApp
     </a>
 
-    <button class="floating-button floating-button--chat" type="button" aria-label="Abrir asistente virtual">
-      IA
+    <button class="floating-button floating-button--chat" type="button" aria-label="Abrir chat">
+      <span class="floating-button__bubble" aria-hidden="true"></span>
+      <span>Chat</span>
     </button>
 
     <section class="chatbot" aria-hidden="true">
@@ -364,9 +365,31 @@
               <input type="date" name="fechaNacimiento" required />
             </label>
             <label>
+              <span>Horoscopo</span>
+              <select name="horoscopo" required>
+                <option value="">Elige tu signo</option>
+                <option value="Aries">Aries</option>
+                <option value="Tauro">Tauro</option>
+                <option value="Geminis">Geminis</option>
+                <option value="Cancer">Cancer</option>
+                <option value="Leo">Leo</option>
+                <option value="Virgo">Virgo</option>
+                <option value="Libra">Libra</option>
+                <option value="Escorpio">Escorpio</option>
+                <option value="Sagitario">Sagitario</option>
+                <option value="Capricornio">Capricornio</option>
+                <option value="Acuario">Acuario</option>
+                <option value="Piscis">Piscis</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="field-grid">
+            <label>
               <span>Email</span>
               <input type="email" name="email" placeholder="Tu mejor correo" required />
             </label>
+            <div></div>
           </div>
 
           <label>
@@ -375,6 +398,7 @@
           </label>
 
           <div class="booking-form__actions">
+            <button class="button button--secondary" type="button" data-close-modal="true">Ir hacia atras</button>
             <button class="button button--primary" type="submit">Enviar solicitud</button>
             <p class="form-message" id="booking-modal-message" role="status" aria-live="polite"></p>
           </div>
