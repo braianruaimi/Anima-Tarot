@@ -8,7 +8,7 @@ if (contactForm && formMessage) {
     const formData = new FormData(contactForm);
     const nombre = formData.get('nombre');
 
-    formMessage.textContent = `Gracias ${nombre}, tu consulta fue enviada con exito. Te responderemos pronto.`;
+    formMessage.textContent = `Gracias ${nombre}, recibimos tu mensaje. Muy pronto nos pondremos en contacto para ayudarte a coordinar tu lectura.`;
     formMessage.classList.add('is-success');
     contactForm.reset();
 

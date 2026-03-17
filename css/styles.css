@@ -10,6 +10,9 @@
   --primary-strong: #f0d3a0;
   --secondary: #2d2239;
   --violet-glow: rgba(72, 45, 96, 0.45);
+  --violet-electric: #8f4dff;
+  --lilac-electric: #bf7dff;
+  --violet-soft: rgba(143, 77, 255, 0.16);
   --shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
   --radius-lg: 32px;
   --radius-md: 22px;
@@ -31,7 +34,8 @@ body {
   color: var(--text);
   background:
     radial-gradient(circle at top, rgba(211, 171, 111, 0.16), transparent 24%),
-    radial-gradient(circle at 100% 0, rgba(72, 45, 96, 0.22), transparent 24%),
+    radial-gradient(circle at 100% 0, rgba(143, 77, 255, 0.18), transparent 26%),
+    radial-gradient(circle at 18% 78%, rgba(191, 125, 255, 0.1), transparent 22%),
     linear-gradient(180deg, #110c18 0%, #06050a 100%);
   font-family: Georgia, 'Times New Roman', serif;
 }
@@ -84,7 +88,7 @@ ul {
 .page-shell::before {
   top: -8rem;
   left: -10rem;
-  background: radial-gradient(circle, rgba(95, 58, 128, 0.35), transparent 64%);
+  background: radial-gradient(circle, rgba(143, 77, 255, 0.3), transparent 64%);
 }
 
 .page-shell::after {
@@ -119,7 +123,17 @@ main {
   background:
     linear-gradient(180deg, rgba(6, 6, 8, 0.12), rgba(6, 6, 8, 0.42)),
     radial-gradient(circle at 15% 20%, rgba(211, 171, 111, 0.15), transparent 20%),
-    radial-gradient(circle at 85% 18%, rgba(72, 45, 96, 0.26), transparent 18%);
+    radial-gradient(circle at 85% 18%, rgba(143, 77, 255, 0.22), transparent 20%);
+  pointer-events: none;
+}
+
+.hero__backdrop::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 65% 35%, rgba(191, 125, 255, 0.1), transparent 18%),
+    radial-gradient(circle at 30% 70%, rgba(143, 77, 255, 0.08), transparent 22%);
   pointer-events: none;
 }
 
@@ -162,6 +176,7 @@ main {
 .brand {
   color: var(--primary);
   font-weight: 700;
+  text-shadow: 0 0 18px rgba(191, 125, 255, 0.16);
 }
 
 .nav-links {
@@ -182,7 +197,7 @@ main {
   right: 0;
   bottom: -0.35rem;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  background: linear-gradient(90deg, transparent, var(--lilac-electric), transparent);
   transform: scaleX(0.2);
   opacity: 0;
   transition: transform 180ms ease, opacity 180ms ease;
@@ -229,6 +244,7 @@ main {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.75rem;
+  text-shadow: 0 0 14px rgba(191, 125, 255, 0.12);
 }
 
 h1,
@@ -243,6 +259,7 @@ h1 {
   margin-bottom: 1.25rem;
   font-size: clamp(3.1rem, 8vw, 6.4rem);
   line-height: 0.93;
+  text-wrap: balance;
 }
 
 h2 {
@@ -297,9 +314,14 @@ li {
 }
 
 .button--secondary {
-  background: rgba(72, 45, 96, 0.12);
+  background: linear-gradient(180deg, rgba(143, 77, 255, 0.14), rgba(72, 45, 96, 0.18));
   color: var(--text);
   border-color: var(--line);
+}
+
+.button--secondary:hover {
+  border-color: rgba(191, 125, 255, 0.38);
+  box-shadow: 0 12px 30px rgba(143, 77, 255, 0.12);
 }
 
 .hero__metrics {
@@ -322,13 +344,14 @@ li {
 .hero__metrics article {
   padding: 1rem;
   border-radius: var(--radius-md);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(72, 45, 96, 0.1));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(143, 77, 255, 0.1));
 }
 
 .hero__metrics strong {
   display: block;
   color: var(--primary-strong);
   font-size: 1.8rem;
+  text-shadow: 0 0 16px rgba(191, 125, 255, 0.12);
 }
 
 .hero__card,
@@ -360,6 +383,7 @@ li {
   border: 1px solid rgba(240, 211, 160, 0.16);
   border-radius: calc(var(--radius-lg) - 10px);
   pointer-events: none;
+  box-shadow: inset 0 0 40px rgba(143, 77, 255, 0.04);
 }
 
 .section {
@@ -379,6 +403,13 @@ li {
   height: 1px;
   transform: translateX(-50%);
   background: linear-gradient(90deg, transparent, rgba(240, 211, 160, 0.3), transparent);
+}
+
+.section-heading h2,
+.section-heading--split h2,
+.cta-final__panel h2,
+.hero__card-copy h2 {
+  text-shadow: 0 0 24px rgba(143, 77, 255, 0.08);
 }
 
 .section-heading {
@@ -445,7 +476,7 @@ li {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 45%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(143, 77, 255, 0.02) 25%, transparent 48%);
   pointer-events: none;
 }
 
@@ -454,6 +485,7 @@ li {
 .testimonial-card:hover {
   border-color: rgba(240, 211, 160, 0.24);
   transform: translateY(-4px);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(143, 77, 255, 0.08);
 }
 
 .service-card {
@@ -529,7 +561,7 @@ li {
   padding: 0.95rem 1rem;
   border-radius: var(--radius-sm);
   border: 1px solid rgba(211, 171, 111, 0.18);
-  background: rgba(9, 8, 13, 0.55);
+  background: linear-gradient(180deg, rgba(10, 8, 14, 0.72), rgba(20, 14, 30, 0.64));
   color: var(--text);
   transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
@@ -537,8 +569,9 @@ li {
 .booking-form input:focus,
 .booking-form textarea:focus,
 .chatbot__form input:focus {
-  outline: 2px solid rgba(211, 171, 111, 0.18);
-  border-color: rgba(211, 171, 111, 0.4);
+  outline: 2px solid rgba(143, 77, 255, 0.16);
+  border-color: rgba(191, 125, 255, 0.44);
+  box-shadow: 0 0 0 4px rgba(143, 77, 255, 0.08);
 }
 
 .booking-form__actions {
@@ -554,6 +587,7 @@ li {
 
 .form-message.is-success {
   color: var(--primary-strong);
+  text-shadow: 0 0 12px rgba(191, 125, 255, 0.14);
 }
 
 .testimonials-grid {
@@ -581,7 +615,7 @@ li {
   padding: 2rem;
   text-align: center;
   background:
-    radial-gradient(circle at top, rgba(72, 45, 96, 0.22), transparent 30%),
+    radial-gradient(circle at top, rgba(143, 77, 255, 0.2), transparent 30%),
     linear-gradient(180deg, rgba(27, 20, 38, 0.96), rgba(14, 11, 20, 0.96));
 }
 
@@ -606,7 +640,7 @@ li {
   left: 0;
   width: 10rem;
   height: 1px;
-  background: linear-gradient(90deg, rgba(240, 211, 160, 0.7), transparent);
+  background: linear-gradient(90deg, rgba(191, 125, 255, 0.6), transparent);
 }
 
 .footer__links {
@@ -645,7 +679,7 @@ li {
 .floating-button--chat {
   left: 1rem;
   background:
-    radial-gradient(circle at top, rgba(240, 211, 160, 0.12), transparent 45%),
+    radial-gradient(circle at top, rgba(191, 125, 255, 0.2), transparent 45%),
     var(--panel-strong);
   color: var(--primary-strong);
   border-color: var(--line);
@@ -659,7 +693,7 @@ li {
   width: min(360px, calc(100% - 2rem));
   border-radius: 28px;
   background:
-    radial-gradient(circle at top, rgba(72, 45, 96, 0.26), transparent 42%),
+    radial-gradient(circle at top, rgba(143, 77, 255, 0.24), transparent 42%),
     rgba(14, 11, 20, 0.97);
   padding: 1rem;
   opacity: 0;
@@ -710,13 +744,13 @@ li {
 }
 
 .chatbot__message--bot {
-  background: linear-gradient(180deg, rgba(211, 171, 111, 0.14), rgba(72, 45, 96, 0.12));
+  background: linear-gradient(180deg, rgba(211, 171, 111, 0.14), rgba(143, 77, 255, 0.12));
   color: var(--text);
 }
 
 .chatbot__message--user {
   margin-left: auto;
-  background: rgba(72, 45, 96, 0.28);
+  background: linear-gradient(180deg, rgba(143, 77, 255, 0.26), rgba(72, 45, 96, 0.28));
   color: var(--text);
 }
 
@@ -729,7 +763,7 @@ li {
 
 .chatbot__faq-chip {
   border: 1px solid rgba(240, 211, 160, 0.16);
-  background: rgba(255, 255, 255, 0.03);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(143, 77, 255, 0.08));
   color: var(--text);
   border-radius: 999px;
   padding: 0.55rem 0.8rem;
@@ -739,8 +773,8 @@ li {
 
 .chatbot__faq-chip:hover {
   transform: translateY(-1px);
-  border-color: rgba(240, 211, 160, 0.38);
-  background: rgba(72, 45, 96, 0.18);
+  border-color: rgba(191, 125, 255, 0.38);
+  background: rgba(143, 77, 255, 0.18);
 }
 
 .chatbot__form input {

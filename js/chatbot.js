@@ -12,33 +12,33 @@ const topicKnowledge = {
   productos: {
     keywords: ['producto', 'productos', 'tienda', 'articulo', 'articulos'],
     answers: [
-      'Puedes mostrar productos destacados con imagen, descripcion y boton. La estructura actual ya permite presentar piezas principales con una narrativa mas premium.',
-      'Si sigues hablando de productos, conviene separar estrella, colecciones y piezas personalizadas para que la decision sea mas rapida.',
-      'Tambien puedes usar el boton de cada tarjeta para llevar a WhatsApp, catalogo o ficha detallada del producto.',
+      'Si ofreces productos rituales, velas, cursos o sesiones complementarias, pueden mostrarse con imagen, beneficio principal y un llamado claro a escribirte.',
+      'Cuando el usuario entiende rapido que recibe y por que le conviene, la decision de contacto ocurre con mucha mas naturalidad.',
+      'Tambien puedes llevar cada tarjeta a WhatsApp o a una ficha detallada para convertir interes en conversacion real.',
     ],
   },
   servicios: {
     keywords: ['servicio', 'servicios', 'sesion', 'sesiones', 'lectura', 'lecturas'],
     answers: [
-      'La plantilla permite presentar servicios principales, beneficios y llamadas a la accion para reservar o consultar por WhatsApp.',
-      'Si tu consulta sigue sobre servicios, una buena mejora es diferenciar lectura general, tiradas tematicas y acompanamiento breve.',
-      'Tambien puedes sumar duracion, modalidad y valor orientativo dentro de cada bloque de servicio.',
+      'Puedes presentar lecturas generales, tiradas especificas y acompanamiento por WhatsApp con un tono claro, sensible y profesional.',
+      'Si quieres vender mejor tus servicios, conviene mostrar para quien es cada lectura, que tipo de claridad aporta y como reservarla.',
+      'Tambien puedes sumar duracion, modalidad y valor orientativo para reducir dudas antes del contacto.',
     ],
   },
   pedidos: {
     keywords: ['pedido', 'pedidos', 'orden', 'ordenes', 'reserva', 'reservas', 'turno', 'turnos'],
     answers: [
-      'El formulario sirve para recibir pedidos o consultas. Luego puedes conectarlo con email, backend o automatizaciones si quieres escalarlo.',
-      'Si sigues preguntando por pedidos o reservas, la mejor experiencia es combinar formulario breve con cierre inmediato por WhatsApp.',
-      'Tambien es viable guardar consultas en localStorage o conectar una agenda real cuando quieras pasar a una version operativa.',
+      'La reserva esta pensada para que escribirte sea simple: pocos pasos, mensaje claro y posibilidad de seguir por WhatsApp.',
+      'Si la persona ya esta decidida, lo mejor es darle salida inmediata con un boton de contacto visible y un formulario breve como respaldo.',
+      'Cuando quieras escalarlo, esta base puede conectarse con agenda, email o automatizaciones sin cambiar la experiencia visual.',
     ],
   },
   precios: {
     keywords: ['precio', 'precios', 'valor', 'valores', 'costo', 'costos', 'tarifa', 'tarifas'],
     answers: [
-      'Puedes indicar precios en las tarjetas o responder por WhatsApp si prefieres una venta mas personalizada.',
-      'Si quieres mantener una estetica mas exclusiva, puedes mostrar valores desde y dejar los detalles finos para la conversacion directa.',
-      'Otra opcion es destacar rangos, promociones o sesiones especiales sin saturar la interfaz principal.',
+      'Puedes mostrar valores orientativos o responder por WhatsApp si prefieres una atencion mas personalizada y cercana.',
+      'Si quieres cuidar una percepcion premium, funciona muy bien mostrar precios desde y ampliar detalles en la conversacion.',
+      'Otra opcion es destacar promociones, sesiones especiales o combos sin recargar la pagina principal.',
     ],
   },
 };
@@ -153,7 +153,7 @@ function getBotReply(text) {
     lastTopic: null,
   });
 
-  return 'Puedo ayudarte con dudas sobre productos, servicios, pedidos o precios. Si tocas una pregunta frecuente o escribes sobre uno de esos temas, te respondo con mas contexto.';
+  return 'Puedo ayudarte con servicios, reservas, precios y dudas frecuentes. Si eliges un tema o me haces una pregunta directa, te respondo con mas contexto.';
 }
 
 function toggleChatbot(forceOpen) {
