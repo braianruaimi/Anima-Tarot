@@ -10,11 +10,10 @@ const modalMessage = document.getElementById('booking-modal-message');
 const cardReadingModal = document.getElementById('card-reading-modal');
 const cardReadingButton = document.getElementById('card-reading-button');
 const cardReadingCards = document.querySelectorAll('.card-pick');
-const cardReadingResult = document.getElementById('card-reading-result');
 const cardReadingKicker = document.getElementById('card-reading-kicker');
+const cardReadingArcana = document.getElementById('card-reading-arcana');
+const cardReadingTitleLive = document.getElementById('card-reading-title-live');
 const cardReadingText = document.getElementById('card-reading-text');
-const cardReadingBookButton = document.getElementById('card-reading-book');
-const cardReadingBackButton = document.getElementById('card-reading-back');
 const cardReadingToggle = document.getElementById('card-reading-toggle');
 const cardReadingReopenButton = document.getElementById('card-reading-reopen');
 const testimonialsTrack = document.getElementById('testimonials-track');
@@ -26,13 +25,71 @@ let lastModalTrigger = null;
 let selectedCardService = 'Reserva de lectura';
 let selectedCardSummary = 'Solicitud abierta desde el modal de cartas';
 let activeTestimonialIndex = 0;
+let riderShowcaseIndex = 0;
+let riderShowcaseInterval = null;
+
+const riderShowcaseCards = [
+  {
+    arcana: 'II',
+    title: 'La Sacerdotisa',
+    kicker: 'Rider especialmente trabajado',
+    text: 'Intuicion, silencio y lectura fina de lo que todavia no se dijo. Este mazo se trabaja desde la simbologia Rider para detectar capas reales del proceso.',
+  },
+  {
+    arcana: 'IX',
+    title: 'El Ermitaño',
+    kicker: 'Lectura profunda Rider',
+    text: 'Tiempo de introspeccion, retiro consciente y verdad interior. Ideal cuando la consulta pide claridad madura y no una respuesta superficial.',
+  },
+  {
+    arcana: 'XI',
+    title: 'La Justicia',
+    kicker: 'Precision simbolica Rider',
+    text: 'Equilibrio, decisiones y consecuencias. En Rider esta energia ayuda a ordenar vinculos, limites y elecciones con mucha nitidez.',
+  },
+  {
+    arcana: 'XIX',
+    title: 'El Sol',
+    kicker: 'Apertura luminosa Rider',
+    text: 'Claridad, verdad y expansion. Muestra cuando algo ya esta listo para verse sin niebla y transformarse en accion concreta.',
+  },
+];
 
 function resetCardReadingSelection() {
   cardReadingCards.forEach((cardButton) => cardButton.classList.remove('is-selected'));
+}
 
-  if (cardReadingResult) {
-    cardReadingResult.hidden = true;
+function updateRiderShowcase({ arcana, title, kicker, text }) {
+  if (cardReadingArcana) {
+    cardReadingArcana.textContent = arcana;
   }
+
+  if (cardReadingTitleLive) {
+    cardReadingTitleLive.textContent = title;
+  }
+
+  if (cardReadingKicker) {
+    cardReadingKicker.textContent = kicker;
+  }
+
+  if (cardReadingText) {
+    cardReadingText.textContent = text;
+  }
+}
+
+function startRiderShowcaseRotation() {
+  if (riderShowcaseInterval) {
+    window.clearInterval(riderShowcaseInterval);
+  }
+
+  riderShowcaseInterval = window.setInterval(() => {
+    if (document.hidden || cardReadingModal?.classList.contains('is-open') === false) {
+      return;
+    }
+
+    riderShowcaseIndex = (riderShowcaseIndex + 1) % riderShowcaseCards.length;
+    updateRiderShowcase(riderShowcaseCards[riderShowcaseIndex]);
+  }, 3600);
 }
 
 // IDs/names de los campos a persistir
@@ -164,6 +221,13 @@ function setCardReadingDrawerState(state) {
 
   if (!isOpen) {
     resetCardReadingSelection();
+  }
+
+  if (isOpen) {
+    updateRiderShowcase(riderShowcaseCards[riderShowcaseIndex]);
+  } else if (riderShowcaseCards.length > 0) {
+    riderShowcaseIndex = 0;
+    updateRiderShowcase(riderShowcaseCards[riderShowcaseIndex]);
   }
 }
 
@@ -365,6 +429,10 @@ if (testimonialsTrack && testimonialSlides.length > 0) {
 
 cardReadingCards.forEach((button) => {
   button.addEventListener('click', () => {
+    if (button.classList.contains('is-selected')) {
+      return;
+    }
+
     setCardReadingDrawerState('open');
     cardReadingCards.forEach((cardButton) => cardButton.classList.remove('is-selected'));
     button.classList.add('is-selected');
@@ -372,33 +440,19 @@ cardReadingCards.forEach((button) => {
     selectedCardService = button.getAttribute('data-service') || 'Reserva de lectura';
     selectedCardSummary = button.getAttribute('data-summary') || 'Solicitud abierta desde el modal de cartas';
 
-    if (cardReadingKicker) {
-      cardReadingKicker.textContent = button.getAttribute('data-title') || 'Carta elegida';
-    }
+    updateRiderShowcase({
+      arcana: button.querySelector('.card-pick__mark')?.textContent || 'Rider',
+      title: button.getAttribute('data-title') || 'Carta elegida',
+      kicker: 'Carta Rider seleccionada',
+      text: button.getAttribute('data-reading') || '',
+    });
 
-    if (cardReadingText) {
-      cardReadingText.textContent = button.getAttribute('data-reading') || '';
-    }
-
-    if (cardReadingResult) {
-      cardReadingResult.hidden = false;
-    }
+    window.setTimeout(() => {
+      setCardReadingDrawerState('hidden');
+      openBookingFlow(selectedCardService, selectedCardSummary, button);
+    }, 760);
   });
 });
-
-if (cardReadingBackButton) {
-  cardReadingBackButton.addEventListener('click', () => {
-    resetCardReadingSelection();
-    setCardReadingDrawerState('open');
-  });
-}
-
-if (cardReadingBookButton) {
-  cardReadingBookButton.addEventListener('click', () => {
-    setCardReadingDrawerState('hidden');
-    openBookingFlow(selectedCardService, selectedCardSummary, cardReadingBookButton);
-  });
-}
 
 if (bookingModalForm instanceof HTMLFormElement) {
   const birthDateField = bookingModalForm.querySelector('input[name="fechaNacimiento"]');
@@ -487,6 +541,8 @@ document.addEventListener('click', (event) => {
 window.addEventListener('load', () => {
   document.body.classList.add('is-ready');
   setupRevealAnimations();
+  updateRiderShowcase(riderShowcaseCards[0]);
+  startRiderShowcaseRotation();
 });
 
 setCardReadingDrawerState('hidden');

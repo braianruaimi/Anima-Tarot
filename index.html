@@ -118,7 +118,7 @@
               <h2>Elige el tipo de acompanamiento que mejor responda a lo que hoy necesitas mirar.</h2>
             </div>
             <p>
-              Cada sesion tiene un enfoque distinto. Puedes empezar por una lectura amplia o ir directo a un tema puntual si ya sabes lo que necesitas resolver.
+              Cada sesion tiene un enfoque distinto. Trabajo especialmente con la simbologia Rider para leer procesos reales con mas detalle, profundidad y lenguaje claro.
             </p>
           </div>
 
@@ -465,36 +465,69 @@
 
         <div class="card-reading-modal__content">
           <div class="card-reading-modal__topbar">
-            <p>Una señal breve para este momento.</p>
+            <p>Una señal breve desde el mazo Rider, trabajado especialmente para abrir la reserva correcta.</p>
             <button class="chatbot__close" type="button" data-close-cards-modal="true" aria-label="Ocultar lectura breve">Ocultar</button>
           </div>
 
-          <div class="card-reading-modal__cards" id="card-reading-cards">
-            <button class="card-pick tarot-frame" type="button" data-card="luna" data-service="Lectura intuitiva de claridad" data-summary="Reserva sugerida desde la carta La Luna" data-title="La Luna" data-reading="Hay algo importante moviendose por debajo de la superficie. Esta carta habla de intuicion, emociones intensas y necesidad de ver con claridad lo que hoy aun no tiene forma completa.">
-              <span class="card-pick__mark">I</span>
-              <strong>La Luna</strong>
-            </button>
-            <button class="card-pick tarot-frame" type="button" data-card="estrella" data-service="Lectura de apertura y proyeccion" data-summary="Reserva sugerida desde la carta La Estrella" data-title="La Estrella" data-reading="Esta carta trae alivio, recuperacion y direccion. Senala que hay una energia de renacer, pero necesita una lectura clara para convertir esperanza en movimiento concreto.">
-              <span class="card-pick__mark">II</span>
-              <strong>La Estrella</strong>
-            </button>
-            <button class="card-pick tarot-frame" type="button" data-card="torre" data-service="Lectura profunda para cambios fuertes" data-summary="Reserva sugerida desde la carta La Torre" data-title="La Torre" data-reading="Hay una estructura interna o externa que ya no puede sostenerse igual. Esta carta pide verdad, decision y una lectura que te ayude a atravesar el cambio sin confundirte mas.">
-              <span class="card-pick__mark">III</span>
-              <strong>La Torre</strong>
-            </button>
-          </div>
-
-          <div class="card-reading-modal__result" id="card-reading-result" hidden>
-            <p class="eyebrow" id="card-reading-kicker">Carta elegida</p>
-            <p class="card-reading-modal__text" id="card-reading-text"></p>
-            <div class="booking-form__actions">
-              <button class="button button--secondary" type="button" id="card-reading-back">
-                Volver
+          <div class="card-reading-modal__layout">
+            <div class="card-reading-modal__cards" id="card-reading-cards">
+              <button class="card-pick tarot-frame" type="button" data-card="luna" data-service="Lectura intuitiva de claridad" data-summary="Reserva sugerida desde la carta La Luna" data-title="La Luna" data-reading="Hay algo importante moviendose por debajo de la superficie. Esta carta habla de intuicion, emociones intensas y necesidad de ver con claridad lo que hoy aun no tiene forma completa.">
+                <span class="card-pick__inner">
+                  <span class="card-pick__face card-pick__face--front">
+                    <span class="card-pick__mark">XVIII</span>
+                    <strong>La Luna</strong>
+                    <span class="card-pick__caption">Rider trabajado para claridad emocional</span>
+                  </span>
+                  <span class="card-pick__face card-pick__face--back">
+                    <span class="card-pick__reserve">Reservar</span>
+                    <span class="card-pick__caption">Abrir lectura intuitiva</span>
+                  </span>
+                </span>
               </button>
-              <button class="button button--primary" type="button" id="card-reading-book">
-                Quiero reservar
+              <button class="card-pick tarot-frame" type="button" data-card="estrella" data-service="Lectura de apertura y proyeccion" data-summary="Reserva sugerida desde la carta La Estrella" data-title="La Estrella" data-reading="Esta carta trae alivio, recuperacion y direccion. Senala que hay una energia de renacer, pero necesita una lectura clara para convertir esperanza en movimiento concreto.">
+                <span class="card-pick__inner">
+                  <span class="card-pick__face card-pick__face--front">
+                    <span class="card-pick__mark">XVII</span>
+                    <strong>La Estrella</strong>
+                    <span class="card-pick__caption">Rider trabajado para apertura y guia</span>
+                  </span>
+                  <span class="card-pick__face card-pick__face--back">
+                    <span class="card-pick__reserve">Reservar</span>
+                    <span class="card-pick__caption">Abrir lectura de proyeccion</span>
+                  </span>
+                </span>
+              </button>
+              <button class="card-pick tarot-frame" type="button" data-card="torre" data-service="Lectura profunda para cambios fuertes" data-summary="Reserva sugerida desde la carta La Torre" data-title="La Torre" data-reading="Hay una estructura interna o externa que ya no puede sostenerse igual. Esta carta pide verdad, decision y una lectura que te ayude a atravesar el cambio sin confundirte mas.">
+                <span class="card-pick__inner">
+                  <span class="card-pick__face card-pick__face--front">
+                    <span class="card-pick__mark">XVI</span>
+                    <strong>La Torre</strong>
+                    <span class="card-pick__caption">Rider trabajado para cambios decisivos</span>
+                  </span>
+                  <span class="card-pick__face card-pick__face--back">
+                    <span class="card-pick__reserve">Reservar</span>
+                    <span class="card-pick__caption">Abrir lectura profunda</span>
+                  </span>
+                </span>
               </button>
             </div>
+
+            <aside class="card-reading-modal__showcase tarot-frame" aria-live="polite">
+              <p class="eyebrow" id="card-reading-kicker">Rider especialmente trabajado</p>
+              <div class="card-reading-modal__showcase-card">
+                <div class="card-reading-modal__plate-header">
+                  <span class="card-reading-modal__arcana" id="card-reading-arcana">II</span>
+                  <span class="card-reading-modal__seal" aria-hidden="true"></span>
+                </div>
+                <strong id="card-reading-title-live">La Sacerdotisa</strong>
+                <div class="card-reading-modal__illustration" aria-hidden="true">
+                  <span class="card-reading-modal__illustration-ring"></span>
+                  <span class="card-reading-modal__illustration-star"></span>
+                </div>
+                <p class="card-reading-modal__text" id="card-reading-text">Intuicion, silencio y lectura fina de lo que todavia no se dijo. Este mazo se trabaja desde la simbologia Rider para detectar capas reales del proceso.</p>
+                <span class="card-reading-modal__plate-footer">Rider Waite Smith · lectura simbolica</span>
+              </div>
+            </aside>
           </div>
         </div>
       </div>
