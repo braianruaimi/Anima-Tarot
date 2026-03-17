@@ -127,6 +127,7 @@
               <img src="images/service-reading.svg" alt="Servicio de lectura personalizada" />
               <div class="service-card__body">
                 <div class="service-card__kicker">
+                  <span>$6.000</span>
                   <span>25 minutos</span>
                   <span>3 preguntas</span>
                 </div>
@@ -196,25 +197,7 @@
             </p>
           </div>
 
-          <div class="booking__layout">
-            <article class="panel booking-form booking-form--info">
-              <p class="eyebrow">Reserva directa</p>
-              <h3>Abre el formulario flotante, completa tus datos y deja tu solicitud ahora.</h3>
-              <p>
-                Este acceso te lleva directo al modal de reserva para que elijas tu servicio, completes tus datos y envies la consulta ordenada por WhatsApp sin salir del sitio.
-              </p>
-              <div class="booking-form__actions">
-                <button
-                  class="button button--primary open-booking-modal"
-                  type="button"
-                  data-service="Reserva de lectura"
-                  data-summary="Solicitud directa desde la seccion principal de reservas"
-                >
-                  Reservar
-                </button>
-              </div>
-            </article>
-
+          <div class="booking__layout booking__layout--single">
             <aside class="panel booking-info tarot-frame">
               <p class="eyebrow">Por que dar el paso</p>
               <h3>Porque a veces una lectura no cambia tu destino, pero si cambia la forma en que lo miras.</h3>
@@ -533,8 +516,11 @@
       </div>
     </section>
 
-    <button class="card-reading-reopen" type="button" id="card-reading-reopen" aria-label="Volver a abrir cartas intuitivas" aria-hidden="true">
-      <span class="card-reading-reopen__icon" aria-hidden="true"></span>
+    <button class="card-reading-reopen" type="button" id="card-reading-reopen" aria-label="Abrir formulario de reserva" aria-hidden="true">
+      <span class="card-reading-reopen__card" aria-hidden="true">
+        <span class="card-reading-reopen__card-mark">✦</span>
+      </span>
+      <span class="card-reading-reopen__label">Reservar</span>
     </button>
 
     <section class="promo-modal" id="promo-modal" aria-hidden="true">

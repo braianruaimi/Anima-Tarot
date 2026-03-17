@@ -355,7 +355,8 @@ if (cardReadingButton) {
 
 if (cardReadingReopenButton) {
   cardReadingReopenButton.addEventListener('click', () => {
-    setCardReadingDrawerState('open');
+    setCardReadingDrawerState('hidden');
+    openBookingFlow('Reserva de lectura', 'Solicitud directa desde la carta flotante de reserva', cardReadingReopenButton);
   });
 }
 
