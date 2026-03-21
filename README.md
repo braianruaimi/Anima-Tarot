@@ -4,6 +4,7 @@ Sitio web estatico de Anima Tarot orientado a conversion directa por WhatsApp, c
 
 Sitio publicado:
 
+- https://animatarot.site/
 - https://braianruaimi.github.io/Anima-Tarot/
 
 Repositorio:

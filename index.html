@@ -595,13 +595,16 @@
             <input id="ceo-password" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Ingresa la clave" required />
           </label>
           <div class="booking-form__actions ceo-panel__login-actions">
-            <button class="button button--secondary" type="button" data-close-ceo-panel="true">Cancelar</button>
+            <button class="button button--secondary" type="button" data-close-ceo-panel="true">Ir hacia atrás</button>
             <button class="button button--primary" type="submit">Entrar al panel</button>
           </div>
           <p class="form-message" id="ceo-login-message" role="status" aria-live="polite"></p>
         </form>
 
         <div class="ceo-panel__dashboard" id="ceo-dashboard" hidden>
+          <div class="ceo-panel__back">
+            <button class="button button--secondary ceo-panel__back-button" type="button" data-close-ceo-panel="true">Ir hacia atrás</button>
+          </div>
           <div class="ceo-panel__stats">
             <article class="ceo-stat">
               <span>Views</span>

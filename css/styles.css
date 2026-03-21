@@ -801,20 +801,26 @@ li {
 }
 
 .footer__ceo-button {
-  padding: 0.35rem 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.18rem 0.48rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.02);
-  color: rgba(245, 236, 220, 0.46);
+  background: transparent;
+  color: rgba(245, 236, 220, 0.2);
   cursor: pointer;
-  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  font-size: 0.64rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease, opacity 180ms ease, transform 180ms ease;
 }
 
 .footer__ceo-button:hover,
 .footer__ceo-button:focus-visible {
   color: var(--primary);
-  border-color: rgba(235, 198, 122, 0.34);
+  border-color: rgba(235, 198, 122, 0.22);
   background: rgba(235, 198, 122, 0.06);
+  opacity: 1;
+  transform: translateY(-1px);
 }
 
 .floating-button {
@@ -1663,6 +1669,10 @@ li {
   padding-top: 1rem;
 }
 
+.ceo-panel__login.is-invalid {
+  animation: ceoPanelShake 420ms ease;
+}
+
 .ceo-panel__login label {
   display: grid;
   gap: 0.45rem;
@@ -1683,6 +1693,12 @@ li {
   box-shadow: 0 0 0 4px rgba(143, 77, 255, 0.08);
 }
 
+.ceo-panel__login.is-invalid input,
+.ceo-panel__login input[aria-invalid='true'] {
+  border-color: rgba(255, 125, 125, 0.58);
+  box-shadow: 0 0 0 4px rgba(255, 125, 125, 0.08);
+}
+
 .ceo-panel__login-actions {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -1691,6 +1707,15 @@ li {
   display: grid;
   gap: 1rem;
   padding-top: 1rem;
+}
+
+.ceo-panel__back {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.ceo-panel__back-button {
+  min-width: 180px;
 }
 
 .ceo-panel__stats,
@@ -1802,6 +1827,29 @@ li {
 .ceo-card--full {
   display: grid;
   gap: 0.9rem;
+}
+
+@keyframes ceoPanelShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-8px);
+  }
+
+  40% {
+    transform: translateX(7px);
+  }
+
+  60% {
+    transform: translateX(-5px);
+  }
+
+  80% {
+    transform: translateX(4px);
+  }
 }
 
 .promo-modal__overlay {

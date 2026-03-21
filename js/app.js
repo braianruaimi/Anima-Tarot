@@ -27,6 +27,7 @@ const ceoLoginForm = document.getElementById('ceo-login-form');
 const ceoPasswordInput = document.getElementById('ceo-password');
 const ceoLoginMessage = document.getElementById('ceo-login-message');
 const ceoDashboard = document.getElementById('ceo-dashboard');
+const ceoPanelDialog = ceoPanel?.querySelector('.ceo-panel__dialog') || null;
 const ceoChannelList = document.getElementById('ceo-channel-list');
 const ceoServiceList = document.getElementById('ceo-service-list');
 const ceoDailyList = document.getElementById('ceo-daily-list');
@@ -417,6 +418,7 @@ function renderCeoDashboard(existingMetrics) {
 function setCeoPanelUnlocked(isUnlocked, message) {
   if (ceoLoginForm) {
     ceoLoginForm.hidden = isUnlocked;
+    ceoLoginForm.classList.remove('is-invalid');
   }
 
   if (ceoDashboard) {
@@ -428,8 +430,31 @@ function setCeoPanelUnlocked(isUnlocked, message) {
     ceoLoginMessage.classList.toggle('is-success', Boolean(isUnlocked));
   }
 
+  if (ceoPasswordInput) {
+    ceoPasswordInput.setAttribute('aria-invalid', String(!isUnlocked && Boolean(message)));
+  }
+
   if (isUnlocked) {
     renderCeoDashboard();
+  }
+}
+
+function triggerCeoLoginError(message) {
+  if (ceoLoginForm) {
+    ceoLoginForm.classList.remove('is-invalid');
+    void ceoLoginForm.offsetWidth;
+    ceoLoginForm.classList.add('is-invalid');
+  }
+
+  if (ceoLoginMessage) {
+    ceoLoginMessage.textContent = message;
+    ceoLoginMessage.classList.remove('is-success');
+  }
+
+  if (ceoPasswordInput) {
+    ceoPasswordInput.setAttribute('aria-invalid', 'true');
+    ceoPasswordInput.focus();
+    ceoPasswordInput.select();
   }
 }
 
@@ -444,6 +469,11 @@ function toggleCeoPanel(forceOpen) {
 
   if (!shouldOpen) {
     setCeoPanelUnlocked(false, '');
+
+    if (ceoPasswordInput) {
+      ceoPasswordInput.value = '';
+    }
+
     return;
   }
 
@@ -824,7 +854,7 @@ if (ceoLoginForm instanceof HTMLFormElement) {
 
     if (enteredPassword !== ceoPassword) {
       pushDataLayerEvent('ceo_login_failed');
-      setCeoPanelUnlocked(false, 'Contraseña incorrecta.');
+      triggerCeoLoginError('Contraseña incorrecta.');
       return;
     }
 
