@@ -32,7 +32,6 @@ const ceoServiceList = document.getElementById('ceo-service-list');
 const ceoDailyList = document.getElementById('ceo-daily-list');
 const whatsappNumber = '5492215868669';
 const ceoMetricsStorageKey = 'anima_ceo_metrics_v1';
-const ceoSessionUnlockKey = 'anima_ceo_unlocked';
 const ceoViewSessionKey = 'anima_ceo_view_recorded';
 const ceoPassword = '1234';
 let lastModalTrigger = null;
@@ -444,17 +443,13 @@ function toggleCeoPanel(forceOpen) {
   ceoPanel.setAttribute('aria-hidden', String(!shouldOpen));
 
   if (!shouldOpen) {
+    setCeoPanelUnlocked(false, '');
     return;
   }
 
   pushDataLayerEvent('ceo_panel_open');
 
-  const isUnlocked = window.sessionStorage.getItem(ceoSessionUnlockKey) === 'true';
-  setCeoPanelUnlocked(isUnlocked, isUnlocked ? 'Panel desbloqueado para esta sesión.' : '');
-
-  if (isUnlocked) {
-    return;
-  }
+  setCeoPanelUnlocked(false, '');
 
   if (ceoPasswordInput) {
     ceoPasswordInput.value = '';
@@ -833,7 +828,6 @@ if (ceoLoginForm instanceof HTMLFormElement) {
       return;
     }
 
-    window.sessionStorage.setItem(ceoSessionUnlockKey, 'true');
     pushDataLayerEvent('ceo_login_success');
     setCeoPanelUnlocked(true, 'Acceso concedido.');
   });
