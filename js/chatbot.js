@@ -5,6 +5,12 @@ const chatMessages = chatbot?.querySelector('#chat-messages') || null;
 const faqButtons = chatbot?.querySelectorAll('.chatbot__faq-chip') || [];
 const initialBotMessage = chatMessages?.querySelector('.chatbot__message--bot')?.textContent || '';
 
+function trackChatbotEvent(eventName, payload = {}) {
+  if (typeof window.pushDataLayerEvent === 'function') {
+    window.pushDataLayerEvent(eventName, payload);
+  }
+}
+
 const topicAnswers = {
   precios:
     'Hoy las lecturas disponibles son: Lectura general inicial por $6.000, Lectura general expandida por $8.000 y Lectura profunda completa por $10.000. Si no sabes cuál elegir, la mejor decisión es tomar la que se ajuste a la profundidad que hoy necesitas.',
@@ -60,8 +66,15 @@ function toggleChatbot(forceOpen) {
   }
 
   const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !chatbot.classList.contains('is-open');
+  const wasOpen = chatbot.classList.contains('is-open');
   chatbot.classList.toggle('is-open', shouldOpen);
   chatbot.setAttribute('aria-hidden', String(!shouldOpen));
+
+  if (shouldOpen && !wasOpen) {
+    trackChatbotEvent('chatbot_open', {
+      source: forceOpen === true ? 'faq' : 'floating_button',
+    });
+  }
 }
 
 if (chatbotButton) {
@@ -82,6 +95,10 @@ faqButtons.forEach((button) => {
     }
 
     toggleChatbot(true);
+    trackChatbotEvent('chatbot_faq_click', {
+      topic,
+      question,
+    });
     resetChatMessages();
     appendMessage(question, 'user');
 

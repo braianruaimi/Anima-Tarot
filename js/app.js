@@ -21,7 +21,20 @@ const testimonialsDots = document.getElementById('testimonials-dots');
 const testimonialSlides = Array.from(document.querySelectorAll('.testimonials-carousel__slide'));
 const promoModal = document.getElementById('promo-modal');
 const chatbotPanel = document.querySelector('.chatbot');
+const ceoAccessButton = document.getElementById('ceo-access-button');
+const ceoPanel = document.getElementById('ceo-panel');
+const ceoLoginForm = document.getElementById('ceo-login-form');
+const ceoPasswordInput = document.getElementById('ceo-password');
+const ceoLoginMessage = document.getElementById('ceo-login-message');
+const ceoDashboard = document.getElementById('ceo-dashboard');
+const ceoChannelList = document.getElementById('ceo-channel-list');
+const ceoServiceList = document.getElementById('ceo-service-list');
+const ceoDailyList = document.getElementById('ceo-daily-list');
 const whatsappNumber = '5492215047962';
+const ceoMetricsStorageKey = 'anima_ceo_metrics_v1';
+const ceoSessionUnlockKey = 'anima_ceo_unlocked';
+const ceoViewSessionKey = 'anima_ceo_view_recorded';
+const ceoPassword = '1234';
 let lastModalTrigger = null;
 let selectedCardService = 'Reserva de lectura';
 let selectedCardSummary = 'Solicitud abierta desde el modal de cartas';
@@ -55,6 +68,412 @@ const riderShowcaseCards = [
     text: 'Claridad, verdad y expansión. Muestra cuando algo ya está listo para verse sin niebla y transformarse en acción concreta.',
   },
 ];
+
+function createEmptyMetricsDay() {
+  return {
+    views: 0,
+    instagramClicks: 0,
+    whatsappClicks: 0,
+    bookingOpens: 0,
+    formSubmissions: 0,
+    serviceBreakdown: {},
+  };
+}
+
+function createEmptyMetricsStore() {
+  return {
+    totals: {
+      views: 0,
+      instagramClicks: 0,
+      whatsappClicks: 0,
+      bookingOpens: 0,
+      formSubmissions: 0,
+      serviceBreakdown: {},
+    },
+    daily: {},
+  };
+}
+
+function normalizeServiceBreakdown(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return {};
+  }
+
+  return Object.entries(value).reduce((accumulator, [service, count]) => {
+    const normalizedCount = Number(count) || 0;
+
+    if (normalizedCount > 0) {
+      accumulator[service] = normalizedCount;
+    }
+
+    return accumulator;
+  }, {});
+}
+
+function normalizeMetricsStore(rawValue) {
+  const metrics = createEmptyMetricsStore();
+
+  if (!rawValue || typeof rawValue !== 'object') {
+    return metrics;
+  }
+
+  const rawTotals = rawValue.totals || {};
+  metrics.totals.views = Number(rawTotals.views) || 0;
+  metrics.totals.instagramClicks = Number(rawTotals.instagramClicks) || 0;
+  metrics.totals.whatsappClicks = Number(rawTotals.whatsappClicks) || 0;
+  metrics.totals.bookingOpens = Number(rawTotals.bookingOpens) || 0;
+  metrics.totals.formSubmissions = Number(rawTotals.formSubmissions) || 0;
+  metrics.totals.serviceBreakdown = normalizeServiceBreakdown(rawTotals.serviceBreakdown);
+
+  const rawDaily = rawValue.daily || {};
+  Object.entries(rawDaily).forEach(([dateKey, dayValue]) => {
+    const day = createEmptyMetricsDay();
+
+    if (dayValue && typeof dayValue === 'object') {
+      day.views = Number(dayValue.views) || 0;
+      day.instagramClicks = Number(dayValue.instagramClicks) || 0;
+      day.whatsappClicks = Number(dayValue.whatsappClicks) || 0;
+      day.bookingOpens = Number(dayValue.bookingOpens) || 0;
+      day.formSubmissions = Number(dayValue.formSubmissions) || 0;
+      day.serviceBreakdown = normalizeServiceBreakdown(dayValue.serviceBreakdown);
+    }
+
+    metrics.daily[dateKey] = day;
+  });
+
+  return metrics;
+}
+
+function readMetricsStore() {
+  try {
+    const rawValue = window.localStorage.getItem(ceoMetricsStorageKey);
+
+    if (!rawValue) {
+      return createEmptyMetricsStore();
+    }
+
+    return normalizeMetricsStore(JSON.parse(rawValue));
+  } catch {
+    return createEmptyMetricsStore();
+  }
+}
+
+function writeMetricsStore(metrics) {
+  window.localStorage.setItem(ceoMetricsStorageKey, JSON.stringify(metrics));
+}
+
+function pushDataLayerEvent(eventName, payload = {}) {
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: eventName,
+    ...payload,
+  });
+}
+
+window.pushDataLayerEvent = pushDataLayerEvent;
+
+function getDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function getRelativeDateKey(daysAgo) {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  date.setDate(date.getDate() - daysAgo);
+  return getDateKey(date);
+}
+
+function getMetricsDay(metrics, dateKey) {
+  if (!metrics.daily[dateKey]) {
+    metrics.daily[dateKey] = createEmptyMetricsDay();
+  }
+
+  return metrics.daily[dateKey];
+}
+
+function updateMetricsStore(mutator) {
+  const metrics = readMetricsStore();
+  mutator(metrics);
+  writeMetricsStore(metrics);
+  renderCeoDashboard(metrics);
+}
+
+function incrementMetric(metricName) {
+  updateMetricsStore((metrics) => {
+    const todayKey = getRelativeDateKey(0);
+    const today = getMetricsDay(metrics, todayKey);
+
+    metrics.totals[metricName] = (Number(metrics.totals[metricName]) || 0) + 1;
+    today[metricName] = (Number(today[metricName]) || 0) + 1;
+  });
+}
+
+function recordFormSubmission(service) {
+  updateMetricsStore((metrics) => {
+    const todayKey = getRelativeDateKey(0);
+    const today = getMetricsDay(metrics, todayKey);
+    const serviceName = service || 'Consulta general';
+
+    metrics.totals.formSubmissions += 1;
+    today.formSubmissions += 1;
+    metrics.totals.serviceBreakdown[serviceName] = (metrics.totals.serviceBreakdown[serviceName] || 0) + 1;
+    today.serviceBreakdown[serviceName] = (today.serviceBreakdown[serviceName] || 0) + 1;
+  });
+}
+
+function formatNumber(value) {
+  return new Intl.NumberFormat('es-AR').format(Number(value) || 0);
+}
+
+function formatPercent(value) {
+  const normalizedValue = Number.isFinite(value) ? value : 0;
+  return `${normalizedValue.toFixed(Math.abs(normalizedValue) >= 10 ? 0 : 1)}%`;
+}
+
+function formatGrowth(value) {
+  const normalizedValue = Number.isFinite(value) ? value : 0;
+  const prefix = normalizedValue > 0 ? '+' : '';
+  return `${prefix}${formatPercent(normalizedValue)}`;
+}
+
+function calculateRate(base, total) {
+  if (!base || !total) {
+    return 0;
+  }
+
+  return (base / total) * 100;
+}
+
+function calculateGrowth(currentValue, previousValue) {
+  if (previousValue === 0) {
+    return currentValue > 0 ? 100 : 0;
+  }
+
+  return ((currentValue - previousValue) / previousValue) * 100;
+}
+
+function getPeriodTotals(metrics, startDaysAgo, endDaysAgo) {
+  const totals = createEmptyMetricsDay();
+
+  for (let dayIndex = startDaysAgo; dayIndex >= endDaysAgo; dayIndex -= 1) {
+    const day = metrics.daily[getRelativeDateKey(dayIndex)] || createEmptyMetricsDay();
+    totals.views += day.views;
+    totals.instagramClicks += day.instagramClicks;
+    totals.whatsappClicks += day.whatsappClicks;
+    totals.bookingOpens += day.bookingOpens;
+    totals.formSubmissions += day.formSubmissions;
+  }
+
+  return totals;
+}
+
+function renderChannelList(metrics, totalViews) {
+  if (!ceoChannelList) {
+    return;
+  }
+
+  const channels = [
+    {
+      label: 'Instagram',
+      total: metrics.totals.instagramClicks,
+      detail: `${formatPercent(calculateRate(metrics.totals.instagramClicks, totalViews))} de las views`,
+    },
+    {
+      label: 'WhatsApp',
+      total: metrics.totals.whatsappClicks,
+      detail: `${formatPercent(calculateRate(metrics.totals.whatsappClicks, totalViews))} de las views`,
+    },
+    {
+      label: 'Aperturas de formulario',
+      total: metrics.totals.bookingOpens,
+      detail: `${formatPercent(calculateRate(metrics.totals.bookingOpens, totalViews))} de las views`,
+    },
+    {
+      label: 'Formularios enviados',
+      total: metrics.totals.formSubmissions,
+      detail: `${formatPercent(calculateRate(metrics.totals.formSubmissions, totalViews))} de las views`,
+    },
+  ];
+
+  ceoChannelList.innerHTML = channels
+    .map(
+      (channel) => `
+        <article class="ceo-channel-row">
+          <div>
+            <span>${channel.label}</span>
+            <small>${channel.detail}</small>
+          </div>
+          <strong>${formatNumber(channel.total)}</strong>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderServiceList(metrics) {
+  if (!ceoServiceList) {
+    return;
+  }
+
+  const services = Object.entries(metrics.totals.serviceBreakdown)
+    .sort((leftService, rightService) => rightService[1] - leftService[1])
+    .slice(0, 6);
+
+  if (services.length === 0) {
+    ceoServiceList.innerHTML = '<article class="ceo-service-row"><div><span>Sin formularios enviados todavía</span><small>Las solicitudes enviadas aparecerán aquí.</small></div><strong>0</strong></article>';
+    return;
+  }
+
+  const maxCount = services[0][1] || 1;
+
+  ceoServiceList.innerHTML = services
+    .map(
+      ([service, count]) => `
+        <article class="ceo-service-row">
+          <div>
+            <span>${service}</span>
+            <small>${formatPercent((count / maxCount) * 100)} del servicio líder</small>
+          </div>
+          <strong>${formatNumber(count)}</strong>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function renderDailyList(metrics) {
+  if (!ceoDailyList) {
+    return;
+  }
+
+  const days = Array.from({ length: 7 }, (_, index) => {
+    const daysAgo = 6 - index;
+    const dateKey = getRelativeDateKey(daysAgo);
+    const [, month, day] = dateKey.split('-');
+    const dayMetrics = metrics.daily[dateKey] || createEmptyMetricsDay();
+
+    return {
+      label: `${day}/${month}`,
+      views: dayMetrics.views,
+      forms: dayMetrics.formSubmissions,
+    };
+  });
+
+  const maxViews = Math.max(...days.map((day) => day.views), 1);
+
+  ceoDailyList.innerHTML = days
+    .map(
+      (day) => `
+        <article class="ceo-daily-row">
+          <span>${day.label}</span>
+          <div class="ceo-daily-row__bar" aria-hidden="true"><span style="width: ${(day.views / maxViews) * 100}%"></span></div>
+          <strong>${formatNumber(day.views)} views</strong>
+          <small>Formularios: ${formatNumber(day.forms)}</small>
+        </article>
+      `,
+    )
+    .join('');
+}
+
+function setMetricText(id, value) {
+  const element = document.getElementById(id);
+
+  if (element) {
+    element.textContent = value;
+  }
+}
+
+function renderCeoDashboard(existingMetrics) {
+  if (!ceoDashboard) {
+    return;
+  }
+
+  const metrics = existingMetrics || readMetricsStore();
+  const totalViews = metrics.totals.views;
+  const totalTrackedClicks = metrics.totals.instagramClicks + metrics.totals.whatsappClicks + metrics.totals.bookingOpens;
+  const currentWeek = getPeriodTotals(metrics, 6, 0);
+  const previousWeek = getPeriodTotals(metrics, 13, 7);
+
+  setMetricText('ceo-views-total', formatNumber(totalViews));
+  setMetricText('ceo-clicks-total', formatNumber(totalTrackedClicks));
+  setMetricText('ceo-forms-total', formatNumber(metrics.totals.formSubmissions));
+  setMetricText('ceo-growth-views', formatGrowth(calculateGrowth(currentWeek.views, previousWeek.views)));
+
+  setMetricText('ceo-click-rate', formatPercent(calculateRate(totalTrackedClicks, totalViews)));
+  setMetricText('ceo-form-view-rate', formatPercent(calculateRate(metrics.totals.formSubmissions, totalViews)));
+  setMetricText('ceo-form-open-rate', formatPercent(calculateRate(metrics.totals.formSubmissions, metrics.totals.bookingOpens)));
+
+  setMetricText('ceo-growth-whatsapp', formatGrowth(calculateGrowth(currentWeek.whatsappClicks, previousWeek.whatsappClicks)));
+  setMetricText('ceo-growth-forms', formatGrowth(calculateGrowth(currentWeek.formSubmissions, previousWeek.formSubmissions)));
+  setMetricText('ceo-growth-bookings', formatGrowth(calculateGrowth(currentWeek.bookingOpens, previousWeek.bookingOpens)));
+
+  renderChannelList(metrics, totalViews);
+  renderServiceList(metrics);
+  renderDailyList(metrics);
+}
+
+function setCeoPanelUnlocked(isUnlocked, message) {
+  if (ceoLoginForm) {
+    ceoLoginForm.hidden = isUnlocked;
+  }
+
+  if (ceoDashboard) {
+    ceoDashboard.hidden = !isUnlocked;
+  }
+
+  if (ceoLoginMessage) {
+    ceoLoginMessage.textContent = message || '';
+    ceoLoginMessage.classList.toggle('is-success', Boolean(isUnlocked));
+  }
+
+  if (isUnlocked) {
+    renderCeoDashboard();
+  }
+}
+
+function toggleCeoPanel(forceOpen) {
+  if (!ceoPanel) {
+    return;
+  }
+
+  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !ceoPanel.classList.contains('is-open');
+  ceoPanel.classList.toggle('is-open', shouldOpen);
+  ceoPanel.setAttribute('aria-hidden', String(!shouldOpen));
+
+  if (!shouldOpen) {
+    return;
+  }
+
+  pushDataLayerEvent('ceo_panel_open');
+
+  const isUnlocked = window.sessionStorage.getItem(ceoSessionUnlockKey) === 'true';
+  setCeoPanelUnlocked(isUnlocked, isUnlocked ? 'Panel desbloqueado para esta sesión.' : '');
+
+  if (isUnlocked) {
+    return;
+  }
+
+  if (ceoPasswordInput) {
+    ceoPasswordInput.value = '';
+    ceoPasswordInput.focus();
+  }
+}
+
+function recordPageView() {
+  if (window.sessionStorage.getItem(ceoViewSessionKey) === 'true') {
+    return;
+  }
+
+  window.sessionStorage.setItem(ceoViewSessionKey, 'true');
+  incrementMetric('views');
+  pushDataLayerEvent('anima_page_view', {
+    page_type: 'landing',
+    page_title: document.title,
+  });
+}
 
 function resetCardReadingSelection() {
   cardReadingCards.forEach((cardButton) => cardButton.classList.remove('is-selected'));
@@ -288,6 +707,13 @@ function togglePromoModal(forceOpen) {
 function openBookingFlow(service, summary, trigger) {
   lastModalTrigger = trigger instanceof HTMLElement ? trigger : lastModalTrigger;
 
+  incrementMetric('bookingOpens');
+  pushDataLayerEvent('booking_open', {
+    service,
+    summary,
+    trigger_label: trigger instanceof HTMLElement ? trigger.textContent?.trim() || '' : '',
+  });
+
   if (bookingModalService) {
     bookingModalService.textContent = `${service} · ${summary}`;
   }
@@ -375,6 +801,44 @@ if (promoModal) {
   });
 }
 
+if (ceoAccessButton) {
+  ceoAccessButton.addEventListener('click', () => {
+    toggleCeoPanel(true);
+  });
+}
+
+if (ceoPanel) {
+  ceoPanel.addEventListener('click', (event) => {
+    const target = event.target;
+
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
+
+    if (target.dataset.closeCeoPanel === 'true') {
+      toggleCeoPanel(false);
+    }
+  });
+}
+
+if (ceoLoginForm instanceof HTMLFormElement) {
+  ceoLoginForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const enteredPassword = ceoPasswordInput instanceof HTMLInputElement ? ceoPasswordInput.value.trim() : '';
+
+    if (enteredPassword !== ceoPassword) {
+      pushDataLayerEvent('ceo_login_failed');
+      setCeoPanelUnlocked(false, 'Contraseña incorrecta.');
+      return;
+    }
+
+    window.sessionStorage.setItem(ceoSessionUnlockKey, 'true');
+    pushDataLayerEvent('ceo_login_success');
+    setCeoPanelUnlocked(true, 'Acceso concedido.');
+  });
+}
+
 function renderTestimonialDots() {
   if (!testimonialsDots || testimonialSlides.length === 0) {
     return;
@@ -433,9 +897,16 @@ cardReadingCards.forEach((button) => {
   button.addEventListener('click', (event) => {
     const target = event.target;
     const clickedReserve = target instanceof HTMLElement && target.closest('.card-pick__reserve');
+    const cardTitle = button.getAttribute('data-title') || 'Carta elegida';
+    const cardService = button.getAttribute('data-service') || 'Reserva de lectura';
 
     if (button.classList.contains('is-selected')) {
       if (clickedReserve) {
+        pushDataLayerEvent('intuitive_card_click', {
+          card_title: cardTitle,
+          service: cardService,
+          action: 'reserve',
+        });
         setCardReadingDrawerState('hidden');
         openBookingFlow(selectedCardService, selectedCardSummary, button);
       }
@@ -449,6 +920,12 @@ cardReadingCards.forEach((button) => {
 
     selectedCardService = button.getAttribute('data-service') || 'Reserva de lectura';
     selectedCardSummary = button.getAttribute('data-summary') || 'Solicitud abierta desde el modal de cartas';
+
+    pushDataLayerEvent('intuitive_card_click', {
+      card_title: cardTitle,
+      service: cardService,
+      action: 'select',
+    });
 
     updateRiderShowcase({
       arcana: button.querySelector('.card-pick__mark')?.textContent || 'Rider',
@@ -488,6 +965,15 @@ if (bookingModalForm instanceof HTMLFormElement) {
     const horoscope = String(formData.get('horoscopo') || '');
     const email = String(formData.get('email') || '');
     const notes = String(formData.get('notas') || '');
+
+    recordFormSubmission(service);
+    pushDataLayerEvent('booking_form_submit', {
+      service,
+      summary,
+      horoscope,
+      has_notes: notes.trim().length > 0,
+      contact_method: 'whatsapp',
+    });
 
     const message = [
       'Hola, quiero solicitar una lectura en Ánima Tarot.',
@@ -529,6 +1015,52 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && promoModal?.classList.contains('is-open')) {
     togglePromoModal(false);
   }
+
+  if (event.key === 'Escape' && ceoPanel?.classList.contains('is-open')) {
+    toggleCeoPanel(false);
+  }
+});
+
+document.addEventListener('click', (event) => {
+  const target = event.target;
+
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+
+  const anchor = target.closest('a');
+
+  if (!(anchor instanceof HTMLAnchorElement)) {
+    return;
+  }
+
+  const href = anchor.getAttribute('href') || '';
+  const linkText = anchor.textContent?.trim() || '';
+
+  if (href.includes('instagram.com')) {
+    incrementMetric('instagramClicks');
+    pushDataLayerEvent('instagram_click', {
+      link_text: linkText,
+      link_url: href,
+      link_location: anchor.closest('.footer') ? 'footer' : 'page',
+    });
+  }
+
+  if (href.includes('wa.me')) {
+    incrementMetric('whatsappClicks');
+    pushDataLayerEvent('whatsapp_click', {
+      link_text: linkText,
+      link_url: href,
+      link_location:
+        anchor.classList.contains('floating-button--whatsapp')
+        ? 'floating_button'
+        : anchor.closest('.footer')
+          ? 'footer'
+          : anchor.closest('.cta-final')
+            ? 'cta_final'
+            : 'page',
+    });
+  }
 });
 
 document.addEventListener('click', (event) => {
@@ -544,10 +1076,12 @@ document.addEventListener('click', (event) => {
 });
 
 window.addEventListener('load', () => {
+  recordPageView();
   document.body.classList.add('is-ready');
   setupRevealAnimations();
   updateRiderShowcase(riderShowcaseCards[0]);
   startRiderShowcaseRotation();
+  renderCeoDashboard();
 });
 
 setCardReadingDrawerState('hidden');

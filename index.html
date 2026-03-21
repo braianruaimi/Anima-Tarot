@@ -1,6 +1,15 @@
 <!doctype html>
 <html lang="es">
   <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-KJXMR48H');
+    </script>
+    <!-- End Google Tag Manager -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -14,6 +23,9 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KJXMR48H" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="install-banner" id="install-banner">
       <button class="button button--secondary install-button" type="button">
         Instalar app
@@ -300,6 +312,7 @@
           </div>
           <div class="footer__links">
             <a href="https://www.instagram.com/anima.tarot_/?hl=es" target="_blank" rel="noreferrer">Instagram</a>
+            <button class="footer__ceo-button" type="button" id="ceo-access-button" aria-label="Abrir panel CEO">CEO</button>
             <a href="https://wa.me/5492215047962" target="_blank" rel="noreferrer">WhatsApp</a>
           </div>
         </div>
@@ -560,6 +573,112 @@
           >
             Reservar
           </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="ceo-panel" id="ceo-panel" aria-hidden="true">
+      <div class="ceo-panel__overlay" data-close-ceo-panel="true"></div>
+      <div class="ceo-panel__dialog panel tarot-frame" role="dialog" aria-modal="true" aria-labelledby="ceo-panel-title">
+        <div class="ceo-panel__header">
+          <div>
+            <p class="eyebrow">Panel CEO</p>
+            <h3 id="ceo-panel-title">Métricas de crecimiento y conversión</h3>
+            <p class="ceo-panel__subtitle">Panel local de este dispositivo con views, clics, formularios y evolución semanal.</p>
+          </div>
+          <button class="chatbot__close" type="button" data-close-ceo-panel="true" aria-label="Cerrar panel CEO">Cerrar</button>
+        </div>
+
+        <form class="ceo-panel__login" id="ceo-login-form">
+          <label>
+            <span>Contraseña</span>
+            <input id="ceo-password" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Ingresa la clave" required />
+          </label>
+          <div class="booking-form__actions ceo-panel__login-actions">
+            <button class="button button--secondary" type="button" data-close-ceo-panel="true">Cancelar</button>
+            <button class="button button--primary" type="submit">Entrar al panel</button>
+          </div>
+          <p class="form-message" id="ceo-login-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="ceo-panel__dashboard" id="ceo-dashboard" hidden>
+          <div class="ceo-panel__stats">
+            <article class="ceo-stat">
+              <span>Views</span>
+              <strong id="ceo-views-total">0</strong>
+              <small>Total acumulado</small>
+            </article>
+            <article class="ceo-stat">
+              <span>Clics medidos</span>
+              <strong id="ceo-clicks-total">0</strong>
+              <small>Instagram, WhatsApp y reservas</small>
+            </article>
+            <article class="ceo-stat">
+              <span>Formularios</span>
+              <strong id="ceo-forms-total">0</strong>
+              <small>Solicitudes enviadas</small>
+            </article>
+            <article class="ceo-stat">
+              <span>Crecimiento semanal</span>
+              <strong id="ceo-growth-views">0%</strong>
+              <small>Views vs. 7 días previos</small>
+            </article>
+          </div>
+
+          <div class="ceo-panel__grid">
+            <section class="ceo-card">
+              <p class="eyebrow">Conversiones</p>
+              <div class="ceo-kpi-list">
+                <article>
+                  <span>Clics / views</span>
+                  <strong id="ceo-click-rate">0%</strong>
+                </article>
+                <article>
+                  <span>Formularios / views</span>
+                  <strong id="ceo-form-view-rate">0%</strong>
+                </article>
+                <article>
+                  <span>Formularios / aperturas</span>
+                  <strong id="ceo-form-open-rate">0%</strong>
+                </article>
+              </div>
+            </section>
+
+            <section class="ceo-card">
+              <p class="eyebrow">Crecimiento</p>
+              <div class="ceo-kpi-list">
+                <article>
+                  <span>WhatsApp</span>
+                  <strong id="ceo-growth-whatsapp">0%</strong>
+                </article>
+                <article>
+                  <span>Formularios</span>
+                  <strong id="ceo-growth-forms">0%</strong>
+                </article>
+                <article>
+                  <span>Reservas abiertas</span>
+                  <strong id="ceo-growth-bookings">0%</strong>
+                </article>
+              </div>
+            </section>
+          </div>
+
+          <div class="ceo-panel__grid ceo-panel__grid--wide">
+            <section class="ceo-card">
+              <p class="eyebrow">Canales</p>
+              <div class="ceo-channel-list" id="ceo-channel-list"></div>
+            </section>
+
+            <section class="ceo-card">
+              <p class="eyebrow">Servicios con formularios</p>
+              <div class="ceo-service-list" id="ceo-service-list"></div>
+            </section>
+          </div>
+
+          <section class="ceo-card ceo-card--full">
+            <p class="eyebrow">Últimos 7 días</p>
+            <div class="ceo-daily-list" id="ceo-daily-list"></div>
+          </section>
         </div>
       </div>
     </section>
